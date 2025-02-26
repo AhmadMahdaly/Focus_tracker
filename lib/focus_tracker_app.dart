@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:focus_tracker/home_screen.dart';
+import 'package:focus_tracker/screens/home_screen.dart';
 
 class FocusTrackerApp extends StatelessWidget {
   const FocusTrackerApp({super.key});
