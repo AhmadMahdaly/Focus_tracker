@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_tracker/main.dart';
+import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/utils/components/text_field_border.dart';
 import 'package:hive/hive.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -15,17 +16,6 @@ class StatsScreen extends StatefulWidget {
 
 class _StatsScreenState extends State<StatsScreen> {
   final TextEditingController _goalController = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-    openBox();
-  }
-
-  Future<void> openBox() async {
-    if (!Hive.isBoxOpen('sessionsBox')) {
-      await Hive.openBox<Session>('sessionsBox');
-    }
-  }
 
   List<FlSpot> _generateChartData(Box sessionBox) {
     Map<int, int> weeklyData = {};
@@ -117,6 +107,17 @@ class _StatsScreenState extends State<StatsScreen> {
       );
       _hasSent50PercentNotification = true;
     }
+    void unlockAchievement(String title) {
+      final Box<AchievementModel> achievementsBox = Hive.box('achievementsBox');
+
+      for (var i = 0; i < achievementsBox.length; i++) {
+        final achievement = achievementsBox.getAt(i) as AchievementModel;
+        if (achievement.title == title && !achievement.isUnlocked) {
+          achievement.isUnlocked = true;
+          achievement.save();
+        }
+      }
+    }
 
     if (progress >= 1.0 && !_hasSent100PercentNotification) {
       _sendNotification(
@@ -124,6 +125,19 @@ class _StatsScreenState extends State<StatsScreen> {
         "رائع! لقد أكملت 100% من هدفك الأسبوعي، استمر في الإنجاز! 🎉",
       );
       _hasSent100PercentNotification = true;
+    }
+    if (sessionCount >= 1) {
+      unlockAchievement("المبتدئ 🎯");
+    }
+    if (sessionCount >= 5) {
+      unlockAchievement("المجتهد 🔥");
+    }
+    if (progress >= 0.5) {
+      unlockAchievement("نصف الطريق 🏆");
+    }
+
+    if (progress >= 1.0) {
+      unlockAchievement("البطل 🚀");
     }
     return Scaffold(
       appBar: AppBar(

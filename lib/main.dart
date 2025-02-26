@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:focus_tracker/focus_tracker_app.dart';
 import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/models/session_model/session_model.dart';
 import 'package:focus_tracker/models/task_model/task_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -20,11 +21,13 @@ void main() async {
   /// تسجيل Adapter لموديل Task
   Hive.registerAdapter(TaskAdapter());
   Hive.registerAdapter(SessionAdapter());
+  Hive.registerAdapter(AchievementModelAdapter());
 
   /// فتح الـ Box لتخزين المهام
   await Hive.openBox<Task>('tasksBox');
   await Hive.openBox<Session>('sessionsBox');
   await Hive.openBox('goalBox');
+  await Hive.openBox<AchievementModel>('achievementsBox');
 
   ///
   const AndroidInitializationSettings androidSettings =

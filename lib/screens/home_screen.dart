@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_tracker/main.dart';
+import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/models/session_model/session_model.dart';
+import 'package:focus_tracker/screens/achievements_screen.dart';
 import 'package:focus_tracker/screens/stats_screen.dart';
 import 'package:focus_tracker/screens/tasks_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,6 +17,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    openBox();
+    super.initState();
+  }
+
   final int _focusDuration = 25; // المدة الافتراضية 25 دقيقة
   ///1500
   int _seconds = 30; // 25 دقيقة (25 × 60 ثانية)
@@ -40,6 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
         _isRunning = false;
       });
       _showNotification(); // إرسال الإشعار عند انتهاء الوقت
+    }
+  }
+
+  Future<void> openBox() async {
+    if (!Hive.isBoxOpen('achievementsBox')) {
+      await Hive.openBox<AchievementModel>('achievementsBox');
+    }
+    if (!Hive.isBoxOpen('sessionsBox')) {
+      await Hive.openBox<Session>('sessionsBox');
     }
   }
 
@@ -87,33 +104,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Focus Tracker'),
-        centerTitle: true,
-        actions: [
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const StatsScreen()),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Image.asset(
-                'assets/images/analytic-server.png',
-                width: 30,
-                height: 30,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Focus Tracker'), centerTitle: true),
       body: Center(
         child: ListView(
           children: [
             SizedBox(height: 250, child: TasksScreen()),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Divider(color: Colors.blue, thickness: 0.4),
+            ),
             const SizedBox(height: 20),
 
             CircularPercentIndicator(
@@ -154,6 +153,48 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
+          ],
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(child: Text('')),
+            ListTile(
+              leading: Icon(Icons.task_alt_outlined),
+              title: Text("المهام"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TasksScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Image.asset(
+                'assets/images/analytic-server.png',
+                width: 20,
+                height: 20,
+                color: Colors.black87,
+              ),
+              title: Text("الإحصائيات"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const StatsScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.star_border_rounded),
+              title: Text("الإنجازات"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AchievementsScreen()),
+                );
+              },
+            ),
           ],
         ),
       ),

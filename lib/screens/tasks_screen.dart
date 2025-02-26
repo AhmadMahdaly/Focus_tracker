@@ -49,10 +49,10 @@ class _TasksScreenState extends State<TasksScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    return Scaffold(
+      appBar: AppBar(title: const Text('مهام'), centerTitle: true),
 
-      child: Column(
+      body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16),
@@ -120,12 +120,34 @@ class _TasksScreenState extends State<TasksScreen> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Divider(color: Colors.blue, thickness: 0.4),
-          ),
         ],
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Text('Focus Tracker'),
+            ),
+            ListTile(
+              title: const Text('حذف جميع المهام'),
+              leading: const Icon(Icons.delete),
+              onTap: () {
+                tasksBox.clear();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.white,
+      //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(320)),
+      //   onPressed: _addTask,
+      //   child: const Icon(Icons.add, color: Colors.blue, size: 24),
+      // ),
     );
   }
 }
