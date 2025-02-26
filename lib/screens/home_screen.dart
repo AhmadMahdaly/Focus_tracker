@@ -104,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'assets/images/analytic-server.png',
                 width: 30,
                 height: 30,
+                color: Colors.blue,
               ),
             ),
           ),
@@ -131,14 +132,26 @@ class _HomeScreenState extends State<HomeScreen> {
             _isRunning
                 ? Center(
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                    ),
                     onPressed: _resetTimer,
-                    child: const Text("إنهاء الجلسة"),
+                    child: const Text(
+                      "إنهاء الجلسة",
+                      style: TextStyle(color: Colors.blue),
+                    ),
                   ),
                 )
                 : Center(
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                    ),
                     onPressed: _startTimer,
-                    child: const Text("ابدأ التركيز"),
+                    child: const Text(
+                      "ابدأ التركيز",
+                      style: TextStyle(color: Colors.blue),
+                    ),
                   ),
                 ),
           ],
