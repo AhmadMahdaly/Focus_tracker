@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:focus_tracker/utils/components/text_field_border.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/task_model/task_model.dart';
 
@@ -49,26 +50,36 @@ class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
+        border: Border.all(color: Colors.blue, width: 2),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _taskController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'أضف مهمة جديدة...',
+                      border: border(),
+                      focusedBorder: border(),
+                      enabledBorder: border(),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: const BorderSide(color: Colors.red),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.add, color: Colors.blue),
+                        onPressed: _addTask,
+                      ),
                     ),
                   ),
                 ),
-                IconButton(icon: const Icon(Icons.add), onPressed: _addTask),
               ],
             ),
           ),
@@ -95,6 +106,11 @@ class _TasksScreenState extends State<TasksScreen> {
                       ),
                       leading: Checkbox(
                         value: task.isCompleted,
+                        checkColor: Colors.blue,
+                        activeColor: Colors.white,
+                        hoverColor: Colors.blue,
+                        focusColor: Colors.blue,
+                        side: const BorderSide(color: Colors.blue),
                         onChanged: (_) => _toggleTaskCompletion(index),
                       ),
                       trailing: IconButton(
