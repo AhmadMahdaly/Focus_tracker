@@ -55,8 +55,10 @@ class _StatsScreenState extends State<StatsScreen> {
     ];
   }
 
+  final Box goalBox = Hive.box('goalBox');
+  final Box sessionBox = Hive.box<Session>('sessionsBox');
+  final Box<AchievementModel> achievementsBox = Hive.box('achievementsBox');
   void _saveGoal(int goal) async {
-    final Box goalBox = Hive.box('goalBox');
     goalBox.put('weeklyGoal', goal);
   }
 
@@ -91,8 +93,6 @@ class _StatsScreenState extends State<StatsScreen> {
   bool _hasSent100PercentNotification = false;
   @override
   Widget build(BuildContext context) {
-    final Box sessionBox = Hive.box<Session>('sessionsBox');
-
     int totalFocusTime = sessionBox.values.fold(
       0,
       (sum, session) => sum + (session as Session).duration,
@@ -108,8 +108,6 @@ class _StatsScreenState extends State<StatsScreen> {
       _hasSent50PercentNotification = true;
     }
     void unlockAchievement(String title) {
-      final Box<AchievementModel> achievementsBox = Hive.box('achievementsBox');
-
       for (var i = 0; i < achievementsBox.length; i++) {
         final achievement = achievementsBox.getAt(i) as AchievementModel;
         if (achievement.title == title && !achievement.isUnlocked) {
@@ -143,6 +141,20 @@ class _StatsScreenState extends State<StatsScreen> {
       appBar: AppBar(
         title: const Text('إحصائيات الإنتاجية'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              setState(() {
+                goalBox.clear();
+                sessionBox.clear();
+                achievementsBox.clear();
+                _hasSent50PercentNotification = false;
+                _hasSent100PercentNotification = false;
+              });
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(32),
