@@ -23,6 +23,7 @@ void main() async {
   /// فتح الـ Box لتخزين المهام
   await Hive.openBox<Task>('tasksBox');
   await Hive.openBox<Session>('sessionsBox');
+  await Hive.openBox('goalBox');
 
   ///
   const AndroidInitializationSettings androidSettings =

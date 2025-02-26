@@ -11,6 +11,7 @@ class StatsScreen extends StatefulWidget {
 }
 
 class _StatsScreenState extends State<StatsScreen> {
+  final TextEditingController _goalController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -61,6 +62,17 @@ class _StatsScreenState extends State<StatsScreen> {
     ];
   }
 
+  void _saveGoal(int goal) async {
+    final Box goalBox = Hive.box('goalBox');
+    goalBox.put('weeklyGoal', goal);
+  }
+
+  int _getGoal() {
+    final Box goalBox = Hive.box('goalBox');
+    return goalBox.get('weeklyGoal', defaultValue: 300); // الافتراضي 300 دقيقة
+  }
+
+  late int goal = 1;
   @override
   Widget build(BuildContext context) {
     final Box sessionBox = Hive.box<Session>('sessionsBox');
@@ -70,7 +82,8 @@ class _StatsScreenState extends State<StatsScreen> {
       (sum, session) => sum + (session as Session).duration,
     );
     int sessionCount = sessionBox.length;
-
+    int weeklyGoal = _getGoal();
+    double progress = totalFocusTime / weeklyGoal;
     return Scaffold(
       appBar: AppBar(
         title: const Text('إحصائيات الإنتاجية'),
@@ -78,60 +91,100 @@ class _StatsScreenState extends State<StatsScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: ListView(
           children: [
-            Text(
-              'إجمالي وقت التركيز: $totalFocusTime دقيقة',
-              style: const TextStyle(fontSize: 18),
+            Row(
+              children: [
+                Text(
+                  'إجمالي وقت التركيز: $totalFocusTime دقيقة',
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ],
             ),
-            Text(
-              'عدد الجلسات المكتملة: $sessionCount',
-              style: const TextStyle(fontSize: 18),
+            Row(
+              children: [
+                Text(
+                  'عدد الجلسات المكتملة: $sessionCount',
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              height: 200,
-              child: LineChart(
-                LineChartData(
-                  gridData: const FlGridData(show: false),
-                  borderData: FlBorderData(
-                    show: true,
-                    border: Border.all(color: Colors.grey, width: 1),
-                  ),
-                  titlesData: FlTitlesData(
-                    topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
+            Center(
+              child: SizedBox(
+                height: 200,
+                child: LineChart(
+                  LineChartData(
+                    gridData: const FlGridData(show: false),
+                    borderData: FlBorderData(
+                      show: true,
+                      border: Border.all(color: Colors.grey, width: 1),
                     ),
-                    leftTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          List<String> days = generateWeekDays();
-                          return Text(
-                            days[value.toInt()],
-                            style: const TextStyle(fontSize: 12),
-                          );
-                        },
+                    titlesData: FlTitlesData(
+                      topTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      leftTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            List<String> days = generateWeekDays();
+                            return Text(
+                              days[value.toInt()],
+                              style: const TextStyle(fontSize: 12),
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: _generateChartData(sessionBox),
-                      isCurved: true,
-                      color: Colors.blue,
-                      barWidth: 4,
-                      belowBarData: BarAreaData(
-                        show: true,
-                        color: Colors.blue.withAlpha(50),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: _generateChartData(sessionBox),
+                        isCurved: true,
+                        color: Colors.blue,
+                        barWidth: 4,
+                        belowBarData: BarAreaData(
+                          show: true,
+                          color: Colors.blue.withAlpha(50),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
+            ),
+            const SizedBox(height: 20),
+
+            TextField(
+              controller: _goalController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: "حدد هدف الإنتاجية الأسبوعي (دقائق)",
+              ),
+              onSubmitted: (value) {
+                goal =
+                    int.tryParse(value) ?? 1; // إذا لم يدخل المستخدم قيمة صحيحة
+                _saveGoal(goal);
+                setState(() {});
+              },
+            ),
+            const SizedBox(height: 20),
+
+            LinearProgressIndicator(
+              borderRadius: BorderRadius.circular(8),
+              value: progress > 1 ? 1 : progress, // لا يتجاوز 100%
+              backgroundColor: Colors.grey[300],
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+            ),
+            const SizedBox(height: 20),
+            Text('$goal عدد دقائق الهدف الأسبوعي'),
+            Text('$totalFocusTime عدد الدقائق المنجزة'),
+
+            Text(
+              "${(progress * 100).toStringAsFixed(0)}% ما تم تحقيقه من الهدف الأسبوعي",
             ),
           ],
         ),
