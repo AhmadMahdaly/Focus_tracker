@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:focus_tracker/main.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _isRunning = false;
       });
-      // يمكنك هنا إضافة إشعار بانتهاء الجلسة
+      _showNotification(); // إرسال الإشعار عند انتهاء الوقت
     }
   }
 
@@ -44,6 +46,27 @@ class _HomeScreenState extends State<HomeScreen> {
     int minutes = seconds ~/ 60;
     int remainingSeconds = seconds % 60;
     return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> _showNotification() async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+          'focus_channel',
+          'Focus Timer',
+          importance: Importance.high,
+          priority: Priority.high,
+        );
+
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidDetails,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'انتهت جلسة التركيز!',
+      'خذ استراحة قصيرة ثم ابدأ جلسة جديدة.',
+      notificationDetails,
+    );
   }
 
   @override
