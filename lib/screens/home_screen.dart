@@ -4,10 +4,12 @@ import 'package:focus_tracker/main.dart';
 import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/models/session_model/session_model.dart';
 import 'package:focus_tracker/screens/achievements_screen.dart';
+import 'package:focus_tracker/screens/settings_screen.dart';
 import 'package:focus_tracker/screens/stats_screen.dart';
 import 'package:focus_tracker/screens/tasks_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -41,13 +43,13 @@ class _HomeScreenState extends State<HomeScreen> {
         _seconds--;
       });
       Future.delayed(const Duration(seconds: 1), _tick);
-    } else {
+    } else if (_seconds == 0) {
+      _resetTimer();
       _saveSession();
-      setState(() {
-        _seconds = 30;
-        _isRunning = false;
-      });
-      _showNotification(); // إرسال الإشعار عند انتهاء الوقت
+      _playTimerSound();
+      _showNotification();
+    } else {
+      _resetTimer();
     }
   }
 
@@ -101,6 +103,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _playTimerSound() {
+    final player = AudioPlayer();
+    String sound = Hive.box(
+      'settingsBox',
+    ).get('timerSound', defaultValue: "default");
+
+    switch (sound) {
+      case "bell":
+        player.play(AssetSource('sounds/bell.wav'));
+        break;
+      case "buzz":
+        player.play(AssetSource('sounds/buzz.wav'));
+        break;
+      default:
+        player.play(AssetSource('sounds/default.wav'));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,13 +128,12 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: ListView(
           children: [
-            SizedBox(height: 250, child: TasksScreen()),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Divider(color: Colors.blue, thickness: 0.4),
-            ),
-            const SizedBox(height: 20),
-
+            // SizedBox(height: 250, child: TasksScreen()),
+            // Padding(
+            //   padding: const EdgeInsets.all(16),
+            //   child: Divider(color: Colors.blue, thickness: 0.4),
+            // ),
+            const SizedBox(height: 100),
             CircularPercentIndicator(
               radius: 100,
               lineWidth: 10,
@@ -125,32 +144,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 _formatTime(_seconds),
                 style: const TextStyle(fontSize: 24),
               ),
+              restartAnimation: true,
               progressColor: Colors.blue,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             _isRunning
                 ? Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      // backgroundColor: Colors.white,
                     ),
                     onPressed: _resetTimer,
-                    child: const Text(
-                      "إنهاء الجلسة",
-                      style: TextStyle(color: Colors.blue),
-                    ),
+                    child: const Text("إنهاء الجلسة"),
                   ),
                 )
                 : Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      // backgroundColor: Colors.white,
                     ),
                     onPressed: _startTimer,
-                    child: const Text(
-                      "ابدأ التركيز",
-                      style: TextStyle(color: Colors.blue),
-                    ),
+                    child: const Text("ابدأ التركيز"),
                   ),
                 ),
           ],
@@ -159,7 +173,18 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: Drawer(
         child: ListView(
           children: [
-            DrawerHeader(child: Text('')),
+            DrawerHeader(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: Navigator.of(context).pop,
+                    icon: Icon(Icons.arrow_forward),
+                  ),
+                  Text(''),
+                ],
+              ),
+            ),
             ListTile(
               leading: Icon(Icons.task_alt_outlined),
               title: Text("المهام"),
@@ -171,12 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: Image.asset(
-                'assets/images/analytic-server.png',
-                width: 20,
-                height: 20,
-                color: Colors.black87,
-              ),
+              leading: Icon(Icons.analytics_outlined),
               title: Text("الإحصائيات"),
               onTap: () {
                 Navigator.push(
@@ -192,6 +212,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AchievementsScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("الإعدادات"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsScreen()),
                 );
               },
             ),
