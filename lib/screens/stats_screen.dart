@@ -240,4 +240,10 @@ class _StatsScreenState extends State<StatsScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _goalController.dispose();
+    super.dispose();
+  }
 }

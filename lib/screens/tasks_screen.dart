@@ -51,10 +51,7 @@ class _TasksScreenState extends State<TasksScreen> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.blue, width: 2),
-        borderRadius: BorderRadius.circular(15),
-      ),
+
       child: Column(
         children: [
           Padding(
@@ -122,6 +119,10 @@ class _TasksScreenState extends State<TasksScreen> {
                 );
               },
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Divider(color: Colors.blue, thickness: 0.4),
           ),
         ],
       ),
