@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:focus_tracker/main.dart';
+import 'package:focus_tracker/utils/components/text_field_border.dart';
 import 'package:hive/hive.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../models/session_model/session_model.dart';
@@ -72,7 +75,30 @@ class _StatsScreenState extends State<StatsScreen> {
     return goalBox.get('weeklyGoal', defaultValue: 300); // الافتراضي 300 دقيقة
   }
 
-  late int goal = 1;
+  late int goal = 300;
+  Future<void> _sendNotification(String title, String body) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          'productivity_channel',
+          'Productivity Notifications',
+          importance: Importance.high,
+          priority: Priority.high,
+        );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+    );
+  }
+
+  bool _hasSent50PercentNotification = false;
+  bool _hasSent100PercentNotification = false;
   @override
   Widget build(BuildContext context) {
     final Box sessionBox = Hive.box<Session>('sessionsBox');
@@ -84,13 +110,28 @@ class _StatsScreenState extends State<StatsScreen> {
     int sessionCount = sessionBox.length;
     int weeklyGoal = _getGoal();
     double progress = totalFocusTime / weeklyGoal;
+    if (progress >= 0.5 && !_hasSent50PercentNotification) {
+      _sendNotification(
+        "🎯 تقدم رائع!",
+        "لقد أكملت 50% من هدفك الأسبوعي، واصل العمل! 🚀",
+      );
+      _hasSent50PercentNotification = true;
+    }
+
+    if (progress >= 1.0 && !_hasSent100PercentNotification) {
+      _sendNotification(
+        "🏆 هدف محقق!",
+        "رائع! لقد أكملت 100% من هدفك الأسبوعي، استمر في الإنجاز! 🎉",
+      );
+      _hasSent100PercentNotification = true;
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('إحصائيات الإنتاجية'),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(32),
         child: ListView(
           children: [
             Row(
@@ -161,12 +202,20 @@ class _StatsScreenState extends State<StatsScreen> {
             TextField(
               controller: _goalController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: "حدد هدف الإنتاجية الأسبوعي (دقائق)",
+              decoration: InputDecoration(
+                hintText: "حدد هدف الإنتاجية الأسبوعي (دقائق)",
+                border: border(),
+                focusedBorder: border(),
+                enabledBorder: border(),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(color: Colors.red),
+                ),
               ),
               onSubmitted: (value) {
                 goal =
-                    int.tryParse(value) ?? 1; // إذا لم يدخل المستخدم قيمة صحيحة
+                    int.tryParse(value) ??
+                    300; // إذا لم يدخل المستخدم قيمة صحيحة
                 _saveGoal(goal);
                 setState(() {});
               },
@@ -180,11 +229,11 @@ class _StatsScreenState extends State<StatsScreen> {
               valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
             ),
             const SizedBox(height: 20),
-            Text('$goal عدد دقائق الهدف الأسبوعي'),
-            Text('$totalFocusTime عدد الدقائق المنجزة'),
+            Text('$goal عدد دقائق الهدف الأسبوعي:'),
+            Text('$totalFocusTime عدد الدقائق المنجزة:'),
 
             Text(
-              "${(progress * 100).toStringAsFixed(0)}% ما تم تحقيقه من الهدف الأسبوعي",
+              "${(progress * 100).toStringAsFixed(0)}% ما تم تحقيقه من الهدف الأسبوعي:",
             ),
           ],
         ),
