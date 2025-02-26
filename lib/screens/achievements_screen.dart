@@ -49,7 +49,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("🏅 الإنجازات")),
+      appBar: AppBar(title: const Text("🏅 الإنجازات"), centerTitle: true),
       body: ListView.builder(
         itemCount: achievementsBox.length,
         itemBuilder: (context, index) {
