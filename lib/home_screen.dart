@@ -11,7 +11,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _seconds = 1500; // 25 دقيقة (25 × 60 ثانية)
+  ///1500
+  int _seconds = 30; // 25 دقيقة (25 × 60 ثانية)
   bool _isRunning = false;
 
   void _startTimer() {
@@ -37,7 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _resetTimer() {
     setState(() {
-      _seconds = 1500;
+      ///1500
+      _seconds = 30;
       _isRunning = false;
     });
   }
@@ -78,9 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularPercentIndicator(
-              radius: 100.0,
-              lineWidth: 10.0,
-              percent: _seconds / 1500,
+              radius: 100,
+              lineWidth: 10,
+
+              ///1500
+              percent: _seconds / 30,
               center: Text(
                 _formatTime(_seconds),
                 style: const TextStyle(fontSize: 24),
@@ -91,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _isRunning
                 ? ElevatedButton(
                   onPressed: _resetTimer,
-                  child: const Text("إيقاف"),
+                  child: const Text("إنهاء الجلسة"),
                 )
                 : ElevatedButton(
                   onPressed: _startTimer,
