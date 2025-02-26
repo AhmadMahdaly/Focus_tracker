@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final int _focusDuration = 25; // المدة الافتراضية 25 دقيقة
   ///1500
-  int _seconds = 30; // 25 دقيقة (25 × 60 ثانية)
+  int _seconds = 1500; // 25 دقيقة (25 × 60 ثانية)
   bool _isRunning = false;
 
   void _startTimer() {
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _resetTimer() {
     setState(() {
       ///1500
-      _seconds = 30;
+      _seconds = 1500;
       _isRunning = false;
     });
   }
@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
               lineWidth: 10,
 
               ///1500
-              percent: _seconds / 30,
+              percent: _seconds / 1500,
               center: Text(
                 _formatTime(_seconds),
                 style: const TextStyle(fontSize: 24),
