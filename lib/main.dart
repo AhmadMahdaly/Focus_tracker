@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:focus_tracker/focus_tracker_app.dart';
 import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:focus_tracker/models/task_model/task_model.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -9,7 +11,12 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  // تهيئة Hive
+  await Hive.initFlutter();
+  // تسجيل Adapter لموديل Task
+  Hive.registerAdapter(TaskAdapter());
+  // فتح الـ Box لتخزين المهام
+  await Hive.openBox<Task>('tasksBox');
   const AndroidInitializationSettings androidSettings =
       AndroidInitializationSettings('@mipmap/ic_launcher');
   const InitializationSettings initSettings = InitializationSettings(
