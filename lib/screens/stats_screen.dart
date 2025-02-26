@@ -229,11 +229,11 @@ class _StatsScreenState extends State<StatsScreen> {
               valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
             ),
             const SizedBox(height: 20),
-            Text('$goal عدد دقائق الهدف الأسبوعي:'),
-            Text('$totalFocusTime عدد الدقائق المنجزة:'),
+            Text('عدد دقائق الهدف الأسبوعي: $goal'),
+            Text('عدد الدقائق المنجزة: $totalFocusTime'),
 
             Text(
-              "${(progress * 100).toStringAsFixed(0)}% ما تم تحقيقه من الهدف الأسبوعي:",
+              "ما تم تحقيقه من الهدف الأسبوعي: ${(progress * 100).toStringAsFixed(0)}%",
             ),
           ],
         ),
