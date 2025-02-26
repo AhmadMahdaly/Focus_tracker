@@ -28,6 +28,7 @@ void main() async {
   await Hive.openBox<Session>('sessionsBox');
   await Hive.openBox('goalBox');
   await Hive.openBox<AchievementModel>('achievementsBox');
+  await Hive.openBox('settingsBox');
 
   ///
   const AndroidInitializationSettings androidSettings =
