@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/focus_tracker_app.dart';
+import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -15,6 +17,13 @@ void main() async {
   );
 
   await flutterLocalNotificationsPlugin.initialize(initSettings);
-
+  // طلب إذن الإشعارات على Android 13+
+  if (Platform.isAndroid) {
+    if (await Permission.notification.request().isGranted) {
+      print("تم منح إذن الإشعارات ✅");
+    } else {
+      print("🔴 لم يتم منح إذن الإشعارات");
+    }
+  }
   runApp(const FocusTrackerApp());
 }
