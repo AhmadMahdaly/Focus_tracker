@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_tracker/main.dart';
+import 'package:focus_tracker/models/session_model/session_model.dart';
+import 'package:focus_tracker/screens/stats_screen.dart';
 import 'package:focus_tracker/screens/tasks_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final int _focusDuration = 25; // المدة الافتراضية 25 دقيقة
   ///1500
   int _seconds = 30; // 25 دقيقة (25 × 60 ثانية)
   bool _isRunning = false;
@@ -30,11 +34,19 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       Future.delayed(const Duration(seconds: 1), _tick);
     } else {
+      _saveSession();
       setState(() {
+        _seconds = 30;
         _isRunning = false;
       });
       _showNotification(); // إرسال الإشعار عند انتهاء الوقت
     }
+  }
+
+  void _saveSession() async {
+    final Box sessionBox = Hive.box<Session>('sessionsBox');
+    final session = Session(date: DateTime.now(), duration: _focusDuration);
+    sessionBox.add(session);
   }
 
   void _resetTimer() {
@@ -75,7 +87,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Focus Tracker'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Focus Tracker'),
+        centerTitle: true,
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const StatsScreen()),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Image.asset(
+                'assets/images/analytic-server.png',
+                width: 30,
+                height: 30,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Center(
         child: ListView(
           children: [
