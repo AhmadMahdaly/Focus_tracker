@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:focus_tracker/focus_tracker_app.dart';
 import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:focus_tracker/models/session_model/session_model.dart';
 import 'package:focus_tracker/models/task_model/task_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -11,12 +12,19 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // تهيئة Hive
+
+  /// تهيئة Hive
   await Hive.initFlutter();
-  // تسجيل Adapter لموديل Task
+
+  /// تسجيل Adapter لموديل Task
   Hive.registerAdapter(TaskAdapter());
-  // فتح الـ Box لتخزين المهام
+  Hive.registerAdapter(SessionAdapter());
+
+  /// فتح الـ Box لتخزين المهام
   await Hive.openBox<Task>('tasksBox');
+  await Hive.openBox<Session>('sessionsBox');
+
+  ///
   const AndroidInitializationSettings androidSettings =
       AndroidInitializationSettings('@mipmap/ic_launcher');
   const InitializationSettings initSettings = InitializationSettings(
@@ -24,7 +32,8 @@ void main() async {
   );
 
   await flutterLocalNotificationsPlugin.initialize(initSettings);
-  // طلب إذن الإشعارات على Android 13+
+
+  /// طلب إذن الإشعارات على Android 13+
   if (Platform.isAndroid) {
     if (await Permission.notification.request().isGranted) {
       print("تم منح إذن الإشعارات ✅");
