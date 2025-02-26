@@ -50,7 +50,19 @@ class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('مهام'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('مهام'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              tasksBox.clear();
+              setState(() {});
+            },
+          ),
+        ],
+      ),
 
       body: Column(
         children: [
@@ -121,25 +133,6 @@ class _TasksScreenState extends State<TasksScreen> {
             ),
           ),
         ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Focus Tracker'),
-            ),
-            ListTile(
-              title: const Text('حذف جميع المهام'),
-              leading: const Icon(Icons.delete),
-              onTap: () {
-                tasksBox.clear();
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
       ),
 
       // floatingActionButton: FloatingActionButton(
