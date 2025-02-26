@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_tracker/main.dart';
+import 'package:focus_tracker/screens/tasks_screen.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -74,11 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Focus Tracker')),
+      appBar: AppBar(title: const Text('Focus Tracker'), centerTitle: true),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: [
+            SizedBox(height: 250, child: TasksScreen()),
+            const SizedBox(height: 20),
+
             CircularPercentIndicator(
               radius: 100,
               lineWidth: 10,
@@ -93,13 +96,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 20),
             _isRunning
-                ? ElevatedButton(
-                  onPressed: _resetTimer,
-                  child: const Text("إنهاء الجلسة"),
+                ? Center(
+                  child: ElevatedButton(
+                    onPressed: _resetTimer,
+                    child: const Text("إنهاء الجلسة"),
+                  ),
                 )
-                : ElevatedButton(
-                  onPressed: _startTimer,
-                  child: const Text("ابدأ التركيز"),
+                : Center(
+                  child: ElevatedButton(
+                    onPressed: _startTimer,
+                    child: const Text("ابدأ التركيز"),
+                  ),
                 ),
           ],
         ),
