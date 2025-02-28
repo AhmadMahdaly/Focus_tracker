@@ -1,5 +1,8 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/providers/theme_provider.dart';
+import 'package:focus_tracker/services/notification_service.dart';
+import 'package:focus_tracker/widgets/leading_icon.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +35,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  void _playTimerSound() {
+    final player = AudioPlayer();
+    String sound = Hive.box(
+      'settingsBox',
+    ).get('timerSound', defaultValue: "default");
+
+    switch (sound) {
+      case "bell":
+        player.play(AssetSource('sounds/bell.wav'));
+        break;
+      case "buzz":
+        player.play(AssetSource('sounds/buzz.wav'));
+        break;
+      default:
+        player.play(AssetSource('sounds/default.wav'));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +61,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           "Settings",
           style: TextStyle(fontWeight: FontWeight.w200),
         ),
+        leading: LeadingIcon(),
       ),
       body: Column(
         children: [
@@ -64,6 +86,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _showSoundSelectionDialog();
             },
           ),
+          ListTile(
+            leading: Icon(Icons.notifications),
+            title: Text("Enable Daily Reminder"),
+            trailing: Switch(
+              value: Hive.box(
+                'settingsBox',
+              ).get('dailyReminder', defaultValue: false),
+              onChanged: (value) {
+                setState(() {
+                  Hive.box('settingsBox').put('dailyReminder', value);
+                  if (value) {
+                    NotificationService.scheduleDailyReminder();
+                  }
+                });
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -80,15 +119,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               ListTile(
                 title: const Text("Default"),
-                onTap: () => _changeSound("default"),
+                onTap: () {
+                  _changeSound("default");
+                  _playTimerSound();
+                },
               ),
               ListTile(
                 title: const Text("Bell"),
-                onTap: () => _changeSound("bell"),
+                onTap: () {
+                  _changeSound("bell");
+                  _playTimerSound();
+                },
               ),
               ListTile(
                 title: const Text("Buzz"),
-                onTap: () => _changeSound("buzz"),
+                onTap: () {
+                  _changeSound("buzz");
+                  _playTimerSound();
+                },
               ),
             ],
           ),
