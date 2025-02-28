@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:focus_tracker/utils/components/text_field_border.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/task_model/task_model.dart';
 
@@ -24,16 +23,6 @@ class _TasksScreenState extends State<TasksScreen> {
   }
 
   final Box tasksBox = Hive.box<Task>('tasksBox');
-  final TextEditingController _taskController = TextEditingController();
-
-  void _addTask() {
-    if (_taskController.text.isNotEmpty) {
-      final task = Task(title: _taskController.text);
-      tasksBox.add(task);
-      _taskController.clear();
-      setState(() {});
-    }
-  }
 
   void _toggleTaskCompletion(int index) {
     final task = tasksBox.getAt(index) as Task;
@@ -48,12 +37,6 @@ class _TasksScreenState extends State<TasksScreen> {
   }
 
   @override
-  void dispose() {
-    _taskController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -62,46 +45,19 @@ class _TasksScreenState extends State<TasksScreen> {
           style: TextStyle(fontWeight: FontWeight.w200),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              tasksBox.clear();
-              setState(() {});
-            },
-          ),
-        ],
+        automaticallyImplyLeading: false,
+
+        // IconButton(
+        //   icon: const Icon(Icons.delete),
+        //   onPressed: () {
+        //     tasksBox.clear();
+        //     setState(() {});
+        //   },
+        // ),
       ),
 
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _taskController,
-                    decoration: InputDecoration(
-                      hintText: 'Add a task',
-                      border: border(),
-                      focusedBorder: border(),
-                      enabledBorder: border(),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(color: Colors.red),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.add, color: Colors.blue),
-                        onPressed: _addTask,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
           Expanded(
             child: ValueListenableBuilder(
               valueListenable: tasksBox.listenable(),
@@ -144,13 +100,6 @@ class _TasksScreenState extends State<TasksScreen> {
           ),
         ],
       ),
-
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.white,
-      //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(320)),
-      //   onPressed: _addTask,
-      //   child: const Icon(Icons.add, color: Colors.blue, size: 24),
-      // ),
     );
   }
 }
