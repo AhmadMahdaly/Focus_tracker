@@ -98,6 +98,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Hive.box('settingsBox').put('dailyReminder', value);
                   if (value) {
                     NotificationService.scheduleDailyReminder();
+                  } else {
+                    settingsBox.clear();
+                    // NotificationService.cancelDailyReminder();
                   }
                 });
               },
