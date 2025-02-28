@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_tracker/main.dart';
 import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/models/session_model/session_model.dart';
+import 'package:focus_tracker/services/notification_service.dart';
 import 'package:focus_tracker/widgets/custom_drawer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -24,7 +25,7 @@ class _TimerScreenState extends State<TimerScreen> {
 
   final int _focusDuration = 25; // المدة الافتراضية 25 دقيقة
   ///1500
-  int _seconds = 1500; // 25 دقيقة (25 × 60 ثانية)
+  int _seconds = 10; // 25 دقيقة (25 × 60 ثانية)
   bool _isRunning = false;
 
   void _startTimer() {
@@ -46,9 +47,21 @@ class _TimerScreenState extends State<TimerScreen> {
       _playTimerSound();
       _showNotification();
       _saveFocusTime();
+      onSessionEnd();
     } else {
       _resetTimer();
     }
+  }
+
+  void onSessionEnd() async {
+    DateTime endTime = DateTime.now(); // وقت انتهاء الجلسة
+
+    await NotificationService.scheduleEndSessionNotification(
+      2, // معرف مختلف عن إشعار البدء
+      "Break time is over! 🚀",
+      "5 minutes have passed since the session ended. Start another session! 🌟",
+      endTime,
+    );
   }
 
   Future<void> openBox() async {
@@ -69,7 +82,7 @@ class _TimerScreenState extends State<TimerScreen> {
   void _resetTimer() {
     setState(() {
       ///1500
-      _seconds = 1500;
+      _seconds = 10;
       _isRunning = false;
     });
   }
@@ -95,8 +108,8 @@ class _TimerScreenState extends State<TimerScreen> {
 
     await flutterLocalNotificationsPlugin.show(
       0,
-      'انتهت جلسة التركيز!',
-      'خذ استراحة قصيرة ثم ابدأ جلسة جديدة.',
+      '🎉 Focus session ended!',
+      'Take a short break and then start a new session. ☕',
       notificationDetails,
     );
   }
