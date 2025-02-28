@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
+import 'package:focus_tracker/widgets/leading_icon.dart';
 import 'package:hive/hive.dart';
 
 class AchievementsScreen extends StatefulWidget {
@@ -54,7 +55,8 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
           "🏅 Achievements",
           style: TextStyle(fontWeight: FontWeight.w200),
         ),
-        centerTitle: true,
+
+        leading: LeadingIcon(),
       ),
       body: ListView.builder(
         itemCount: achievementsBox.length,
