@@ -57,7 +57,10 @@ class _TasksScreenState extends State<TasksScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tasks'),
+        title: const Text(
+          'Tasks',
+          style: TextStyle(fontWeight: FontWeight.w200),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
