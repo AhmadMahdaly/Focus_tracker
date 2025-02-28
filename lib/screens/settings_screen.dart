@@ -35,12 +35,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("الإعدادات")),
+      appBar: AppBar(title: const Text("Settings")),
       body: Column(
         children: [
           ListTile(
             leading: const Icon(Icons.dark_mode),
-            title: const Text("وضع الداكن"),
+            title: const Text("Dark Mode"),
             trailing: Switch(
               value: Provider.of<ThemeProvider>(context).isDarkMode,
               onChanged: (value) {
@@ -53,7 +53,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             leading: const Icon(Icons.music_note),
-            title: const Text("صوت المؤقت"),
+            title: const Text("Timer Sound"),
             subtitle: Text(selectedSound),
             onTap: () {
               _showSoundSelectionDialog();
@@ -69,20 +69,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("اختر صوت المؤقت"),
+          title: const Text("Select Timer Sound"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text("افتراضي"),
+                title: const Text("Default"),
                 onTap: () => _changeSound("default"),
               ),
               ListTile(
-                title: const Text("جرس"),
+                title: const Text("Bell"),
                 onTap: () => _changeSound("bell"),
               ),
               ListTile(
-                title: const Text("طنين"),
+                title: const Text("Buzz"),
                 onTap: () => _changeSound("buzz"),
               ),
             ],
