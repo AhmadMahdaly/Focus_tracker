@@ -8,14 +8,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class TimerScreen extends StatefulWidget {
+  const TimerScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<TimerScreen> createState() => _TimerScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _TimerScreenState extends State<TimerScreen> {
   @override
   void initState() {
     openBox();
@@ -45,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _saveSession();
       _playTimerSound();
       _showNotification();
+      _saveFocusTime();
     } else {
       _resetTimer();
     }
@@ -118,16 +119,20 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _saveFocusTime() {
+    final Box statsBox = Hive.box('statsBox');
+    String today =
+        DateTime.now().weekday.toString(); // تحويل اليوم إلى رقم (1-7)
+    double currentFocus = statsBox.get(today, defaultValue: 0.0);
+    statsBox.put(
+      today,
+      currentFocus + (_focusDuration / 60),
+    ); // تخزين عدد الساعات
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Focus Tracker',
-          style: TextStyle(fontWeight: FontWeight.w200),
-        ),
-        centerTitle: true,
-      ),
       body: Center(
         child: ListView(
           children: [
