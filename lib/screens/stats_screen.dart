@@ -39,15 +39,7 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   List<String> generateWeekDays() {
-    List<String> weekDays = [
-      'الإثنين',
-      'الثلاثاء',
-      'الأربعاء',
-      'الخميس',
-      'الجمعة',
-      'السبت',
-      'الأحد',
-    ];
+    List<String> weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     int todayIndex = DateTime.now().weekday; //
     return [
       ...weekDays.sublist(todayIndex),
@@ -102,8 +94,8 @@ class _StatsScreenState extends State<StatsScreen> {
     double progress = totalFocusTime / weeklyGoal;
     if (progress >= 0.5 && !_hasSent50PercentNotification) {
       _sendNotification(
-        "🎯 تقدم رائع!",
-        "لقد أكملت 50% من هدفك الأسبوعي، واصل العمل! 🚀",
+        "🎯 Great Progress!",
+        "You've reached 50% of your weekly goal! 🚀",
       );
       _hasSent50PercentNotification = true;
     }
@@ -119,27 +111,27 @@ class _StatsScreenState extends State<StatsScreen> {
 
     if (progress >= 1.0 && !_hasSent100PercentNotification) {
       _sendNotification(
-        "🏆 هدف محقق!",
-        "رائع! لقد أكملت 100% من هدفك الأسبوعي، استمر في الإنجاز! 🎉",
+        "🏆 Goal Achieved!",
+        "You've reached 100% of your weekly goal! 🎉",
       );
       _hasSent100PercentNotification = true;
     }
     if (sessionCount >= 1) {
-      unlockAchievement("المبتدئ 🎯");
+      unlockAchievement("Beginner 🎯");
     }
     if (sessionCount >= 5) {
-      unlockAchievement("المجتهد 🔥");
+      unlockAchievement("Diligent 🔥");
     }
     if (progress >= 0.5) {
-      unlockAchievement("نصف الطريق 🏆");
+      unlockAchievement("Halfway 🏆");
     }
 
     if (progress >= 1.0) {
-      unlockAchievement("البطل 🚀");
+      unlockAchievement("Champion 🚀");
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('إحصائيات الإنتاجية'),
+        title: const Text('Productivity Stats'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -163,16 +155,16 @@ class _StatsScreenState extends State<StatsScreen> {
             Row(
               children: [
                 Text(
-                  'إجمالي وقت التركيز: $totalFocusTime دقيقة',
-                  style: const TextStyle(fontSize: 18),
+                  'Total Focus Time: $totalFocusTime minutes',
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
             Row(
               children: [
                 Text(
-                  'عدد الجلسات المكتملة: $sessionCount',
-                  style: const TextStyle(fontSize: 18),
+                  'Completed Sessions: $sessionCount',
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
@@ -229,7 +221,7 @@ class _StatsScreenState extends State<StatsScreen> {
               controller: _goalController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                hintText: "حدد هدف الإنتاجية الأسبوعي (دقائق)",
+                hintText: "Set weekly productivity goal (minutes)",
                 border: border(),
                 focusedBorder: border(),
                 enabledBorder: border(),
@@ -255,11 +247,11 @@ class _StatsScreenState extends State<StatsScreen> {
               valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
             ),
             const SizedBox(height: 20),
-            Text('عدد دقائق الهدف الأسبوعي: $goal'),
-            Text('عدد الدقائق المنجزة: $totalFocusTime'),
+            Text('Weekly Goal Minutes: $goal'),
+            Text('Minutes Achieved: $totalFocusTime'),
 
             Text(
-              "ما تم تحقيقه من الهدف الأسبوعي: ${(progress * 100).toStringAsFixed(0)}%",
+              "Weekly Goal Achieved: ${(progress * 100).toStringAsFixed(0)}%",
             ),
           ],
         ),
