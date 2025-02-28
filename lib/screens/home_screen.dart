@@ -3,10 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_tracker/main.dart';
 import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/models/session_model/session_model.dart';
-import 'package:focus_tracker/screens/achievements_screen.dart';
-import 'package:focus_tracker/screens/settings_screen.dart';
-import 'package:focus_tracker/screens/stats_screen.dart';
-import 'package:focus_tracker/screens/tasks_screen.dart';
+import 'package:focus_tracker/widgets/custom_drawer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -124,7 +121,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Focus Tracker'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text(
+          'Focus Tracker',
+          style: TextStyle(fontWeight: FontWeight.w200),
+        ),
+        centerTitle: true,
+      ),
       body: Center(
         child: ListView(
           children: [
@@ -180,64 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  IconButton(
-                    onPressed: Navigator.of(context).pop,
-                    icon: Icon(Icons.arrow_forward),
-                  ),
-                  Text(''),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.task_alt_outlined),
-              title: Text("Tasks"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TasksScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.analytics_outlined),
-              title: Text("Statistics"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const StatsScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.star_border_rounded),
-              title: Text("Achievements"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AchievementsScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("Settings"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsScreen()),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: CustomDrawer(),
     );
   }
 }
