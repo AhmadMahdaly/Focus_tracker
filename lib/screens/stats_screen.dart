@@ -131,7 +131,10 @@ class _StatsScreenState extends State<StatsScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Productivity Stats'),
+        title: const Text(
+          'Productivity Stats',
+          style: TextStyle(fontWeight: FontWeight.w200),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
