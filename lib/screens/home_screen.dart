@@ -140,9 +140,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
               ///1500
               percent: _seconds / 1500,
-              center: Text(
-                _formatTime(_seconds),
-                style: const TextStyle(fontSize: 24),
+              center: Column(
+                spacing: 12,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _formatTime(_seconds),
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'JUST FOCUS',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ],
               ),
               restartAnimation: true,
               progressColor: Colors.blue,
@@ -150,21 +166,15 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 30),
             _isRunning
                 ? Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      // backgroundColor: Colors.white,
-                    ),
+                  child: IconButton(
                     onPressed: _resetTimer,
-                    child: const Text("إنهاء الجلسة"),
+                    icon: Icon(Icons.stop_rounded, size: 50),
                   ),
                 )
                 : Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      // backgroundColor: Colors.white,
-                    ),
+                  child: IconButton(
                     onPressed: _startTimer,
-                    child: const Text("ابدأ التركيز"),
+                    icon: Icon(Icons.play_arrow_rounded, size: 50),
                   ),
                 ),
           ],
@@ -187,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: Icon(Icons.task_alt_outlined),
-              title: Text("المهام"),
+              title: Text("Tasks"),
               onTap: () {
                 Navigator.push(
                   context,
@@ -197,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: Icon(Icons.analytics_outlined),
-              title: Text("الإحصائيات"),
+              title: Text("Statistics"),
               onTap: () {
                 Navigator.push(
                   context,
@@ -207,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: Icon(Icons.star_border_rounded),
-              title: Text("الإنجازات"),
+              title: Text("Achievements"),
               onTap: () {
                 Navigator.push(
                   context,
@@ -217,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: Icon(Icons.settings),
-              title: Text("الإعدادات"),
+              title: Text("Settings"),
               onTap: () {
                 Navigator.push(
                   context,
