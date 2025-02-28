@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/providers/theme_provider.dart';
-import 'package:focus_tracker/screens/home_screen.dart';
+import 'package:focus_tracker/screens/navy_bottom_bar.dart';
 import 'package:provider/provider.dart';
 
 class FocusTrackerApp extends StatelessWidget {
@@ -23,7 +23,7 @@ class FocusTrackerApp extends StatelessWidget {
                 themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             title: 'Focus Tracker',
 
-            home: const HomeScreen(),
+            home: const NavyBottomBar(),
           );
         },
       ),
