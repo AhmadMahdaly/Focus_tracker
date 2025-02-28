@@ -48,10 +48,16 @@ class _TasksScreenState extends State<TasksScreen> {
   }
 
   @override
+  void dispose() {
+    _taskController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('مهام'),
+        title: const Text('Tasks'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -74,7 +80,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   child: TextField(
                     controller: _taskController,
                     decoration: InputDecoration(
-                      hintText: 'أضف مهمة جديدة...',
+                      hintText: 'Add a task',
                       border: border(),
                       focusedBorder: border(),
                       enabledBorder: border(),
@@ -92,12 +98,13 @@ class _TasksScreenState extends State<TasksScreen> {
               ],
             ),
           ),
+
           Expanded(
             child: ValueListenableBuilder(
               valueListenable: tasksBox.listenable(),
               builder: (context, Box box, _) {
                 if (box.isEmpty) {
-                  return const Center(child: Text('لا توجد مهام بعد!'));
+                  return const Center(child: Text('No tasks yet!'));
                 }
                 return ListView.builder(
                   itemCount: box.length,
