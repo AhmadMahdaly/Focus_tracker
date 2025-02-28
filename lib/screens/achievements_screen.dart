@@ -23,20 +23,20 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
     if (achievementsBox.isEmpty) {
       List<AchievementModel> achievements = [
         AchievementModel(
-          title: "المبتدئ 🎯",
-          description: "أكمل أول جلسة تركيز",
+          title: "Beginner 🎯",
+          description: "Complete the first focus session",
         ),
         AchievementModel(
-          title: "المجتهد 🔥",
-          description: "أكمل 5 جلسات تركيز",
+          title: "Diligent 🔥",
+          description: "Complete 5 focus sessions",
         ),
         AchievementModel(
-          title: "نصف الطريق 🏆",
-          description: "حقق 50% من هدفك الأسبوعي",
+          title: "Halfway 🏆",
+          description: "Achieve 50% of your weekly goal",
         ),
         AchievementModel(
-          title: "البطل 🚀",
-          description: "حقق 100% من هدفك الأسبوعي",
+          title: "Champion 🚀",
+          description: "Achieve 100% of your weekly goal",
         ),
       ];
 
@@ -49,7 +49,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("🏅 الإنجازات"), centerTitle: true),
+      appBar: AppBar(title: const Text("🏅 Achievements"), centerTitle: true),
       body: ListView.builder(
         itemCount: achievementsBox.length,
         itemBuilder: (context, index) {
