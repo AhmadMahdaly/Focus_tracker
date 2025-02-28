@@ -8,6 +8,14 @@ class NotificationService {
 
   static Future<void> init() async {
     tz.initializeTimeZones();
+
+    const AndroidInitializationSettings androidInitSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initSettings = InitializationSettings(
+      android: androidInitSettings,
+    );
+
+    await _notificationsPlugin.initialize(initSettings);
   }
 
   static Future<void> showNotification({
@@ -18,7 +26,7 @@ class NotificationService {
         AndroidNotificationDetails(
           'focus_channel',
           'Focus Reminders',
-          importance: Importance.max,
+          importance: Importance.high,
           priority: Priority.high,
         );
 
@@ -30,9 +38,9 @@ class NotificationService {
 
   static Future<void> scheduleDailyReminder() async {
     await _notificationsPlugin.zonedSchedule(
-      0,
-      'Focus Reminder!',
-      'Time for your focus session. 🚀 Get ready to achieve!',
+      1,
+      '📌 Focus Reminder!',
+      'It\'s time for your focus session. 🚀 Get ready to achieve!',
       _nextInstanceOfFocusTime(),
       const NotificationDetails(
         android: AndroidNotificationDetails('focus_channel', 'Focus Reminders'),
@@ -41,7 +49,7 @@ class NotificationService {
       matchDateTimeComponents: DateTimeComponents.time,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
     );
   }
 
@@ -57,5 +65,49 @@ class NotificationService {
     return scheduledTime.isBefore(now)
         ? scheduledTime.add(Duration(days: 1))
         : scheduledTime;
+  }
+
+  // جدولة إشعار معين بوقت محدد
+  static Future<void> scheduleNotification(
+    int id,
+    String title,
+    String body,
+    DateTime scheduledTime,
+  ) async {
+    await _notificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      tz.TZDateTime.from(scheduledTime, tz.local),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'focus_timer_channel',
+          'Focus Timer',
+          importance: Importance.max,
+          priority: Priority.high,
+          playSound: true,
+          enableVibration: true,
+        ),
+      ),
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
+    );
+  }
+
+  // جدولة إشعار انتهاء الجلسة بعد 5 دقائق
+  static Future<void> scheduleEndSessionNotification(
+    int id,
+    String title,
+    String body,
+    DateTime endTime,
+  ) async {
+    DateTime notificationTime = endTime.add(Duration(seconds: 3)); // +5 دقائق
+    await scheduleNotification(id, title, body, notificationTime);
+  }
+
+  // إلغاء جميع الإشعارات
+  static Future<void> cancelAllNotifications() async {
+    await _notificationsPlugin.cancelAll();
   }
 }
