@@ -19,7 +19,6 @@ dependencies:
   hive_flutter: ^1.1.0
   path_provider: ^2.1.5
   fl_chart: ^0.70.2
-  easy_localization: ^3.0.7+1
   audioplayers: ^6.2.0
   provider: ^6.1.2
 
@@ -36,7 +35,6 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/translations/
     - assets/sounds/
 
   # fonts:

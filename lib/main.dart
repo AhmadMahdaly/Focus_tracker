@@ -7,7 +7,6 @@ import 'package:focus_tracker/models/session_model/session_model.dart';
 import 'package:focus_tracker/models/task_model/task_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -47,13 +46,5 @@ void main() async {
       print("🔴 لم يتم منح إذن الإشعارات");
     }
   }
-  runApp(
-    EasyLocalization(
-      supportedLocales: const [Locale('ar'), Locale('en')],
-      path: 'assets/translations',
-      fallbackLocale: const Locale('ar'),
-      startLocale: const Locale('ar'),
-      child: const FocusTrackerApp(),
-    ),
-  );
+  runApp(const FocusTrackerApp());
 }
