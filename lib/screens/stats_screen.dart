@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_tracker/main.dart';
 import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/utils/components/text_field_border.dart';
+import 'package:focus_tracker/widgets/leading_icon.dart';
 import 'package:hive/hive.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../models/session_model/session_model.dart';
@@ -55,7 +56,6 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   int _getGoal() {
-    final Box goalBox = Hive.box('goalBox');
     return goalBox.get('weeklyGoal', defaultValue: 300); // الافتراضي 300 دقيقة
   }
 
@@ -135,7 +135,8 @@ class _StatsScreenState extends State<StatsScreen> {
           'Productivity Stats',
           style: TextStyle(fontWeight: FontWeight.w200),
         ),
-        centerTitle: true,
+
+        leading: LeadingIcon(),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete),
