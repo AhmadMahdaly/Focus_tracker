@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:focus_tracker/screens/home_screen.dart';
+import 'package:focus_tracker/screens/focus_timer_screen.dart';
 import 'package:focus_tracker/screens/tasks_screen.dart';
+import 'package:focus_tracker/widgets/add_task.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class NavyBottomBar extends StatefulWidget {
@@ -13,10 +14,14 @@ class NavyBottomBar extends StatefulWidget {
 class _NavyBottomBarState extends State<NavyBottomBar> {
   int _currentIndex = 0;
   void _onItemTapped(index) {
-    setState(() => _currentIndex = index);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() => _currentIndex = index);
+      }
+    });
   }
 
-  List<Widget> pages = [HomeScreen(), TasksScreen(), HomeScreen()];
+  List<Widget> pages = [TimerScreen(), TasksScreen(), TimerScreen()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +31,6 @@ class _NavyBottomBarState extends State<NavyBottomBar> {
           Expanded(
             child: Container(
               clipBehavior: Clip.antiAlias,
-
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
@@ -34,8 +38,8 @@ class _NavyBottomBarState extends State<NavyBottomBar> {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withAlpha(25),
-                    blurRadius: 24,
-                    spreadRadius: 0.2,
+                    blurRadius: 10,
+                    spreadRadius: 5, // changes position of shadow
                   ),
                 ],
               ),
@@ -46,6 +50,10 @@ class _NavyBottomBarState extends State<NavyBottomBar> {
                     Colors.white, // tab button ripple color when pressed
                 hoverColor: Colors.white54, // tab button hover color
                 haptic: true, // haptic feedback
+                // tabBorder: Border.all(
+                //   color: Colors.black.withAlpha(25),
+                //   width: 0.5,
+                // ), // tab button border
                 tabBorderRadius: 56,
                 tabActiveBorder: Border.all(
                   color: Colors.black.withAlpha(25),
@@ -54,7 +62,7 @@ class _NavyBottomBarState extends State<NavyBottomBar> {
 
                 duration: Duration(milliseconds: 900), // tab animation duration
                 gap: 8, // the tab button gap between icon and text
-                color: Colors.red[800], // unselected icon color
+                // color: Colors.red[800], // unselected icon color
                 activeColor: Colors.blue, // selected icon and text color
                 iconSize: 24, // tab button icon size
 
@@ -74,9 +82,11 @@ class _NavyBottomBarState extends State<NavyBottomBar> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: FloatingActionButton(
-              onPressed: () {
-                // وظيفة زر الإضافة
-              },
+              onPressed:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddTask()),
+                  ),
               elevation: 0.5,
               tooltip: 'Add Task',
 
