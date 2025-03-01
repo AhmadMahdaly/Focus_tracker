@@ -23,6 +23,7 @@ dependencies:
   provider: ^6.1.2
   google_nav_bar: ^5.0.7
   timezone: ^0.10.0
+  flutter_widgetkit: ^1.0.3
 
 dev_dependencies:
   flutter_test:
