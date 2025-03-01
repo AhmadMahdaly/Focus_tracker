@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/focus_tracker_app.dart';
 import 'dart:io';
@@ -44,9 +46,9 @@ void main() async {
   /// طلب إذن الإشعارات على Android 13+
   if (Platform.isAndroid) {
     if (await Permission.notification.request().isGranted) {
-      print("تم منح إذن الإشعارات ✅");
+      log("تم منح إذن الإشعارات ✅");
     } else {
-      print("🔴 لم يتم منح إذن الإشعارات");
+      log("🔴 لم يتم منح إذن الإشعارات");
     }
   }
   runApp(const FocusTrackerApp());
