@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_tracker/main.dart';
 import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/models/session_model/session_model.dart';
+import 'package:focus_tracker/services/focus_timer_service.dart';
 import 'package:focus_tracker/services/notification_service.dart';
 import 'package:focus_tracker/widgets/custom_drawer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen({super.key});
@@ -24,8 +27,7 @@ class _TimerScreenState extends State<TimerScreen> {
   }
 
   final int _focusDuration = 25; // المدة الافتراضية 25 دقيقة
-  ///1500
-  int _seconds = 10; // 25 دقيقة (25 × 60 ثانية)
+  int _seconds = 1500; // 25 دقيقة (25 × 60 ثانية)
   bool _isRunning = false;
 
   void _startTimer() {
@@ -39,6 +41,8 @@ class _TimerScreenState extends State<TimerScreen> {
     if (_seconds > 0 && _isRunning) {
       setState(() {
         _seconds--;
+        updateTimer(_seconds);
+        sendUpdateToWidget();
       });
       Future.delayed(const Duration(seconds: 1), _tick);
     } else if (_seconds == 0) {
@@ -48,6 +52,8 @@ class _TimerScreenState extends State<TimerScreen> {
       _showNotification();
       _saveFocusTime();
       onSessionEnd();
+      updateTimer(_seconds);
+      sendUpdateToWidget();
     } else {
       _resetTimer();
     }
@@ -62,6 +68,7 @@ class _TimerScreenState extends State<TimerScreen> {
       "5 minutes have passed since the session ended. Start another session! 🌟",
       endTime,
     );
+    await FocusTimerService.saveLastSession(_focusDuration, endTime);
   }
 
   Future<void> openBox() async {
@@ -81,8 +88,7 @@ class _TimerScreenState extends State<TimerScreen> {
 
   void _resetTimer() {
     setState(() {
-      ///1500
-      _seconds = 10;
+      _seconds = 1500;
       _isRunning = false;
     });
   }
@@ -143,23 +149,27 @@ class _TimerScreenState extends State<TimerScreen> {
     ); // تخزين عدد الساعات
   }
 
+  Future<void> updateTimer(int remainingSeconds) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('remaining_time', remainingSeconds);
+  }
+
+  void sendUpdateToWidget() {
+    const platform = MethodChannel('update_widget_channel');
+    platform.invokeMethod('updateWidget');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: ListView(
           children: [
-            // SizedBox(height: 250, child: TasksScreen()),
-            // Padding(
-            //   padding: const EdgeInsets.all(16),
-            //   child: Divider(color: Colors.blue, thickness: 0.4),
-            // ),
             const SizedBox(height: 100),
             CircularPercentIndicator(
               radius: 100,
               lineWidth: 10,
 
-              ///1500
               percent: _seconds / 1500,
               center: Column(
                 spacing: 12,
