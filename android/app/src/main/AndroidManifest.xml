@@ -41,16 +41,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
-        </receiver>
-        <receiver android:name="FocusWidgetReceiver" android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/focus_widget_info" />
-        </receiver>
-        
+        </receiver>  
+        <service
+            android:name="com.pravera.flutter_foreground_task.service.ForegroundService"
+            android:permission="android.permission.FOREGROUND_SERVICE"
+            android:exported="false" />
+
     </application>
     <queries>
             <package android:name="com.android.alarmclock" />
