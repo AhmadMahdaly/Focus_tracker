@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:focus_tracker/widgets/leading_icon.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/task_model/task_model.dart';
 
@@ -47,6 +48,7 @@ class _TasksScreenState extends State<TasksScreen> {
         centerTitle: true,
         automaticallyImplyLeading: false,
 
+        leading: LeadingIcon(),
         // IconButton(
         //   icon: const Icon(Icons.delete),
         //   onPressed: () {
