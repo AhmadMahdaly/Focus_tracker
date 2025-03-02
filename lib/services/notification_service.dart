@@ -33,12 +33,12 @@ class NotificationService {
     const NotificationDetails details = NotificationDetails(
       android: androidDetails,
     );
-    await _notificationsPlugin.show(0, title, body, details);
+    await _notificationsPlugin.show(1, title, body, details);
   }
 
   static Future<void> scheduleDailyReminder() async {
     await _notificationsPlugin.zonedSchedule(
-      1,
+      2,
       '📌 Focus Reminder!',
       'It\'s time for your focus session. 🚀 Get ready to achieve!',
       _nextInstanceOfFocusTime(),
@@ -89,6 +89,8 @@ class NotificationService {
           enableVibration: true,
         ),
       ),
+
+      matchDateTimeComponents: DateTimeComponents.time,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       androidScheduleMode: AndroidScheduleMode.alarmClock,
@@ -102,7 +104,7 @@ class NotificationService {
     String body,
     DateTime endTime,
   ) async {
-    DateTime notificationTime = endTime.add(Duration(seconds: 3)); // +5 دقائق
+    DateTime notificationTime = endTime.add(Duration(minutes: 5)); // +5 دقائق
     await scheduleNotification(id, title, body, notificationTime);
   }
 
