@@ -12,6 +12,8 @@ class TimerScreen extends StatelessWidget {
     return BlocBuilder<TimerManegmentCubit, TimerManegmentState>(
       builder: (context, state) {
         final cubit = context.read<TimerManegmentCubit>();
+        final int soc = 60;
+        final int per = 60;
         return Scaffold(
           body: Center(
             child: ListView(
@@ -20,7 +22,7 @@ class TimerScreen extends StatelessWidget {
                 CircularPercentIndicator(
                   radius: 100,
                   lineWidth: 10,
-                  percent: cubit.focusSeconds / 1500,
+                  percent: soc / per.toDouble(),
                   center: Column(
                     spacing: 12,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +66,7 @@ class TimerScreen extends StatelessWidget {
                     )
                     : Center(
                       child: IconButton(
-                        onPressed: cubit.startTimer,
+                        onPressed: () => cubit.startTimer(),
                         icon: Icon(Icons.play_arrow_rounded, size: 50),
                       ),
                     ),

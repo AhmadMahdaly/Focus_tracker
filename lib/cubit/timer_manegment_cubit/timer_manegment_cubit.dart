@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -20,6 +22,7 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
   void startTimer() {
     isRunning = true;
     Future.delayed(const Duration(seconds: 1), tick);
+    startForegroundTask(); // بدء الخدمة
     emit(TimerStartedState());
   }
 
