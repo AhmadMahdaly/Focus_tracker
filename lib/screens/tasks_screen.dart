@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_tracker/cubit/task_manegment_cubit/task_manegment_cubit.dart';
+import 'package:focus_tracker/cubit/timer_manegment_cubit/timer_manegment_cubit.dart';
 import 'package:focus_tracker/widgets/leading_icon.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/task_model/task_model.dart';
@@ -58,9 +59,35 @@ class TasksScreen extends StatelessWidget {
                             side: const BorderSide(color: Colors.blue),
                             onChanged: (_) => cubit.toggleTaskCompletion(index),
                           ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => cubit.deleteTask(index),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  context.read<TimerManegmentCubit>().isRunning
+                                      ? context
+                                          .read<TimerManegmentCubit>()
+                                          .pauseTimer()
+                                      : context
+                                          .read<TimerManegmentCubit>()
+                                          .startTimer();
+                                  Navigator.pop(context);
+                                },
+                                icon:
+                                    context
+                                            .read<TimerManegmentCubit>()
+                                            .isRunning
+                                        ? const Icon(Icons.pause)
+                                        : const Icon(Icons.play_arrow_rounded),
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () => cubit.deleteTask(index),
+                              ),
+                            ],
                           ),
                         );
                       },
@@ -69,6 +96,17 @@ class TasksScreen extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => cubit.addTaskDialog(context),
+            elevation: 0.5,
+            tooltip: 'Add Task',
+
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(320),
+            ),
+            child: const Icon(Icons.add),
           ),
         );
       },
