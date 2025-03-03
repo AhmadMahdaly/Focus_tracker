@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:focus_tracker/cubit/timer_manegment_cubit/timer_manegment_cubit.dart';
+import 'package:focus_tracker/providers/main_bloc_provider.dart';
 import 'package:focus_tracker/providers/theme_provider.dart';
 import 'package:focus_tracker/screens/navy_bottom_bar.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +13,7 @@ class FocusTrackerApp extends StatelessWidget {
       create: (context) => ThemeProvider(),
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
-          return BlocProvider<TimerManegmentCubit>(
-            create: (context) => TimerManegmentCubit(),
+          return MainBlocProvider(
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
