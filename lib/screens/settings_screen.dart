@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_tracker/cubit/setting_cubit/setting_cubit.dart';
+import 'package:focus_tracker/cubit/stats_cubit/stats_cubit.dart';
+import 'package:focus_tracker/cubit/task_manegment_cubit/task_manegment_cubit.dart';
 import 'package:focus_tracker/providers/theme_provider.dart';
 import 'package:focus_tracker/services/notification_service.dart';
 import 'package:focus_tracker/widgets/leading_icon.dart';
@@ -76,6 +78,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     });
                   },
                 ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text("Clear All Data"),
+
+                onTap: () {
+                  context
+                    ..read<StatsCubit>().resetAllData()
+                    ..read<TaskManegmentCubit>().deleteAllTasks();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("All data has been cleared")),
+                  );
+                },
               ),
             ],
           ),
