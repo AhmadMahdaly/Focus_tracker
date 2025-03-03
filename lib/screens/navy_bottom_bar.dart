@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/screens/focus_timer_screen.dart';
 import 'package:focus_tracker/screens/tasks_screen.dart';
-import 'package:focus_tracker/widgets/add_task.dart';
+import 'package:focus_tracker/screens/widgets/add_task_button.dart';
 import 'package:focus_tracker/widgets/custom_drawer.dart';
 
-class NavyBottomBar extends StatefulWidget {
+class NavyBottomBar extends StatelessWidget {
   const NavyBottomBar({super.key});
 
-  @override
-  State<NavyBottomBar> createState() => _NavyBottomBarState();
-}
-
-class _NavyBottomBarState extends State<NavyBottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +20,10 @@ class _NavyBottomBarState extends State<NavyBottomBar> {
 
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
-
+                border: Border.all(
+                  color: Colors.blue.withAlpha(100),
+                  width: 0.9,
+                ),
                 // color: Colors.white,
               ),
               child: Row(
@@ -35,23 +33,19 @@ class _NavyBottomBarState extends State<NavyBottomBar> {
                     height: 56,
                     width: 120,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(40),
+                      border: Border.all(
+                        color: Colors.blue.withAlpha(100),
+                        width: 0.9,
+                      ),
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(56),
-                        border: Border.all(
-                          // color: Colors.black.withAlpha(25),
-                          width: 1,
-                        ),
-                      ),
-                      child: Row(
-                        spacing: 8,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Icon(Icons.home_filled), Text('Home')],
-                      ),
+                    child: Row(
+                      spacing: 8,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Icon(Icons.home_filled), Text('Home')],
                     ),
                   ),
+
                   IconButton(
                     icon: Icon(Icons.task_alt_rounded),
                     onPressed:
@@ -78,23 +72,7 @@ class _NavyBottomBarState extends State<NavyBottomBar> {
             ),
           ),
           SizedBox(width: 50),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: FloatingActionButton(
-              onPressed:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddTask()),
-                  ),
-              elevation: 0.5,
-              tooltip: 'Add Task',
-
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(320),
-              ),
-              child: const Icon(Icons.add),
-            ),
-          ),
+          AddTaskButton(),
           SizedBox(width: 16),
         ],
       ),
