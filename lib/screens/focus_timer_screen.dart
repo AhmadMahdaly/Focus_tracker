@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:focus_tracker/cubit/stats_cubit/stats_cubit.dart';
 import 'package:focus_tracker/cubit/timer_manegment_cubit/timer_manegment_cubit.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -19,7 +20,6 @@ class TimerScreen extends StatelessWidget {
                 CircularPercentIndicator(
                   radius: 100,
                   lineWidth: 10,
-
                   percent: cubit.focusSeconds / 1500,
                   center: Column(
                     spacing: 12,
@@ -50,7 +50,10 @@ class TimerScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                          onPressed: cubit.stopTimer,
+                          onPressed: () {
+                            cubit.stopTimer();
+                            context.read<StatsCubit>().initializeAchievements();
+                          },
                           icon: Icon(Icons.stop_rounded, size: 50),
                         ),
                         IconButton(
