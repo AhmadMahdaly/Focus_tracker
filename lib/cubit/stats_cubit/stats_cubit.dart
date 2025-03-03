@@ -87,11 +87,16 @@ class StatsCubit extends Cubit<StatsCubitState> {
     );
   }
 
-  int sessionCount() => sessionBox.length;
+  int sessionCount() {
+    return sessionBox.length;
+  }
+
   int weeklyGoal() => getGoal();
   double progress() => totalFocusTime() / weeklyGoal();
+
   bool hasSent50PercentNotification = false;
   bool hasSent100PercentNotification = false;
+
   void unlockAchievement(String title) {
     for (var i = 0; i < achievementsBox.length; i++) {
       final achievement = achievementsBox.getAt(i) as AchievementModel;
@@ -100,38 +105,16 @@ class StatsCubit extends Cubit<StatsCubitState> {
         achievement.save();
       }
     }
+
     emit(UnlockAchievement());
   }
 
-  void sendAchievementNotification() {
-    if (progress() >= 0.5 && !hasSent50PercentNotification) {
-      sendNotification(
-        "🎯 Great Progress!",
-        "You've reached 50% of your weekly goal! 🚀",
-      );
-      hasSent50PercentNotification = true;
-    }
-    if (progress() >= 1.0 && !hasSent100PercentNotification) {
-      sendNotification(
-        "🏆 Goal Achieved!",
-        "You've reached 100% of your weekly goal! 🎉",
-      );
-      hasSent100PercentNotification = true;
-    }
-    if (sessionCount() >= 1) {
-      unlockAchievement("Beginner 🎯");
-    }
-    if (sessionCount() >= 5) {
-      unlockAchievement("Diligent 🔥");
-    }
-    if (progress() >= 0.5) {
-      unlockAchievement("Halfway 🏆");
-    }
-
-    if (progress() >= 1.0) {
-      unlockAchievement("Champion 🚀");
-    }
-    emit(SendAchievementNotification());
+  void resetAllData() {
+    goalBox.clear();
+    sessionBox.clear();
+    achievementsBox.clear();
+    hasSent50PercentNotification = false;
+    hasSent100PercentNotification = false;
   }
 
   void initializeAchievements() async {
@@ -158,6 +141,33 @@ class StatsCubit extends Cubit<StatsCubitState> {
       for (var achievement in achievements) {
         achievementsBox.add(achievement);
       }
+    }
+    if (progress() >= 0.5 && !hasSent50PercentNotification) {
+      sendNotification(
+        "🎯 Great Progress!",
+        "You've reached 50% of your weekly goal! 🚀",
+      );
+      hasSent50PercentNotification = true;
+    }
+    if (progress() >= 1.0 && !hasSent100PercentNotification) {
+      sendNotification(
+        "🏆 Goal Achieved!",
+        "You've reached 100% of your weekly goal! 🎉",
+      );
+      hasSent100PercentNotification = true;
+    }
+    if (sessionCount() >= 1) {
+      unlockAchievement("Beginner 🎯");
+    }
+    if (sessionCount() >= 5) {
+      unlockAchievement("Diligent 🔥");
+    }
+    if (progress() >= 0.5) {
+      unlockAchievement("Halfway 🏆");
+    }
+
+    if (progress() >= 1.0) {
+      unlockAchievement("Champion 🚀");
     }
     emit(InitializeAchievements());
   }

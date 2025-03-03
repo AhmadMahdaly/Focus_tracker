@@ -15,6 +15,4 @@ final class GetGoal extends StatsCubitState {}
 
 final class UnlockAchievement extends StatsCubitState {}
 
-final class SendAchievementNotification extends StatsCubitState {}
-
 final class InitializeAchievements extends StatsCubitState {}
