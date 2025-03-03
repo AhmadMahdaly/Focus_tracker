@@ -6,19 +6,18 @@ Future<void> initForegroundTask() async {
     androidNotificationOptions: AndroidNotificationOptions(
       channelId: 'focus_timer_channel',
       channelName: 'Focus Timer Service',
-      channelDescription: 'خدمة تشغيل المؤقت في الخلفية',
-      channelImportance: NotificationChannelImportance.HIGH,
-      priority: NotificationPriority.HIGH,
-
-      showWhen: true,
-      showBadge: true,
+      channelDescription: 'Background timer service',
+      channelImportance: NotificationChannelImportance.DEFAULT,
+      priority: NotificationPriority.DEFAULT,
+      showWhen: false,
+      showBadge: false,
     ),
     iosNotificationOptions: const IOSNotificationOptions(
       showNotification: false,
       playSound: false,
     ),
     foregroundTaskOptions: ForegroundTaskOptions(
-      eventAction: ForegroundTaskEventAction.repeat(5000),
+      eventAction: ForegroundTaskEventAction.repeat(20000),
       autoRunOnBoot: true,
       autoRunOnMyPackageReplaced: true,
       allowWakeLock: true,
@@ -30,8 +29,8 @@ Future<void> initForegroundTask() async {
 /// تشغيل الخدمة
 Future<void> startForegroundTask() async {
   await FlutterForegroundTask.startService(
-    notificationTitle: 'المؤقت يعمل ⏳',
-    notificationText: 'المؤقت سيبقى يعمل حتى بعد إغلاق التطبيق.',
+    notificationTitle: 'Timer Running ⏳',
+    notificationText: 'Just keep focusing!',
   );
 }
 
