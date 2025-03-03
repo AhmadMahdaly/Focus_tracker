@@ -31,15 +31,7 @@ class _StatsScreenState extends State<StatsScreen> {
             actions: [
               IconButton(
                 icon: const Icon(Icons.delete),
-                onPressed: () {
-                  setState(() {
-                    cubit.goalBox.clear();
-                    cubit.sessionBox.clear();
-                    cubit.achievementsBox.clear();
-                    cubit.hasSent50PercentNotification = false;
-                    cubit.hasSent100PercentNotification = false;
-                  });
-                },
+                onPressed: () => cubit.resetAllData(),
               ),
             ],
           ),
@@ -129,13 +121,10 @@ class _StatsScreenState extends State<StatsScreen> {
                     cubit.goal =
                         int.tryParse(value) ??
                         300; // إذا لم يدخل المستخدم قيمة صحيحة
-                    setState(() {
-                      cubit.saveGoal(cubit.goal);
-                    });
+                    cubit.saveGoal(cubit.goal);
                   },
                 ),
                 const SizedBox(height: 20),
-
                 LinearProgressIndicator(
                   borderRadius: BorderRadius.circular(8),
                   value:
@@ -148,7 +137,6 @@ class _StatsScreenState extends State<StatsScreen> {
                 const SizedBox(height: 20),
                 Text('Weekly Goal Minutes: ${cubit.goal}'),
                 Text('Minutes Achieved: ${cubit.totalFocusTime()}'),
-
                 Text(
                   "Weekly Goal Achieved: ${(cubit.progress() * 100).toStringAsFixed(0)}%",
                 ),
