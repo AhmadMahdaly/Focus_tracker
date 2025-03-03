@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:focus_tracker/screens/about_app.dart';
 import 'package:focus_tracker/screens/achievements_screen.dart';
 import 'package:focus_tracker/screens/settings_screen.dart';
 import 'package:focus_tracker/screens/stats_screen.dart';
@@ -15,7 +16,7 @@ class CustomDrawer extends StatelessWidget {
         children: [
           ListTile(
             leading: Icon(Icons.analytics_outlined),
-            title: Text("Statistics"),
+            title: Text("Productivity Stats"),
             onTap: () {
               Navigator.push(
                 context,
@@ -31,6 +32,16 @@ class CustomDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AchievementsScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text("About App"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutApp()),
               );
             },
           ),
