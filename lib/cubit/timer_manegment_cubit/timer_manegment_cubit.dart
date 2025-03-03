@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:focus_tracker/cubit/stats_cubit/stats_cubit.dart';
 import 'package:focus_tracker/main.dart';
 import 'package:focus_tracker/models/session_model/session_model.dart';
 import 'package:focus_tracker/services/foreground_service.dart';
@@ -51,6 +52,7 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
       playTimerSound();
       showNotification();
       onSessionEnd();
+      StatsCubit().initializeAchievements();
       emit(TimerCompletedState());
     } else {
       pauseTimer();
@@ -76,8 +78,8 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
   }
 
   void resetTimer() {
+    isRunning = false;
     focusSeconds = 1500;
-    stopForegroundTask(); // إيقاف الخدمة عند انتهاء المؤقت
     emit(TimerResetState());
   }
 
