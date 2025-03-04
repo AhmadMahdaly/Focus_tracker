@@ -8,7 +8,10 @@ class AboutApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('About App'),
+        title: const Text(
+          'About App',
+          style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+        ),
         automaticallyImplyLeading: false,
         leading: const LeadingIcon(),
       ),
@@ -16,7 +19,7 @@ class AboutApp extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: ListView(
           children: const [
-            SizedBox(height: 36),
+            SizedBox(height: 24),
             Text(
               'How to Improve Your Focus Using the Focused Work Sessions Technique?',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),

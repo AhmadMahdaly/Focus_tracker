@@ -34,7 +34,7 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
 
   Future<void> stopTimer() async {
     isRunning = false;
-    await saveSession(time / 60);
+    // await saveSession(time / 60);
     resetTimer();
     await stopForegroundTask(); // إيقاف الخدمة
     emit(TimerStoppedState());

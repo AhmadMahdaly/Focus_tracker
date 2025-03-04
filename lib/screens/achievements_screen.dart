@@ -26,7 +26,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
           appBar: AppBar(
             title: const Text(
               '🏅 Achievements',
-              style: TextStyle(fontWeight: FontWeight.w200),
+              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
             ),
 
             leading: const LeadingIcon(),

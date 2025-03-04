@@ -18,7 +18,7 @@ class TasksScreen extends StatelessWidget {
           appBar: AppBar(
             title: const Text(
               "Here's your tasks",
-              style: TextStyle(fontWeight: FontWeight.w200, fontSize: 14),
+              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
             ),
 
             automaticallyImplyLeading: false,

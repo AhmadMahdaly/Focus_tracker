@@ -24,7 +24,7 @@ class _StatsScreenState extends State<StatsScreen> {
           appBar: AppBar(
             title: const Text(
               'Productivity Stats',
-              style: TextStyle(fontWeight: FontWeight.w200),
+              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
             ),
 
             leading: const LeadingIcon(),
@@ -119,6 +119,7 @@ class _StatsScreenState extends State<StatsScreen> {
                           int.tryParse(value) ??
                           300 // إذا لم يدخل المستخدم قيمة صحيحة
                       ..saveGoal(cubit.goal);
+                    _goalController.clear();
                   },
                 ),
                 const SizedBox(height: 20),

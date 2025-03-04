@@ -31,7 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           appBar: AppBar(
             title: const Text(
               'Settings',
-              style: TextStyle(fontWeight: FontWeight.w200),
+              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
             ),
             leading: const LeadingIcon(),
           ),
