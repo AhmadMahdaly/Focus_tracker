@@ -12,16 +12,16 @@ part 'stats_state.dart';
 class StatsCubit extends Cubit<StatsCubitState> {
   StatsCubit() : super(StatsInitial());
 
-  List<FlSpot> generateChartData(Box sessionBox) {
-    Map<int, int> weeklyData = {};
+  List<FlSpot> generateChartData(Box<Session> sessionBox) {
+    final weeklyData = <int, int>{};
 
     for (var i = 0; i < 7; i++) {
       weeklyData[i] = 0;
     }
 
     for (var i = 0; i < sessionBox.length; i++) {
-      final session = sessionBox.getAt(i) as Session;
-      final int dayIndex = DateTime.now().difference(session.date).inDays;
+      final session = sessionBox.getAt(i)!;
+      final dayIndex = DateTime.now().difference(session.date).inDays;
       if (dayIndex < 7) {
         weeklyData[6 - dayIndex] =
             (weeklyData[6 - dayIndex] ?? 0) + session.duration;
@@ -34,8 +34,8 @@ class StatsCubit extends Cubit<StatsCubitState> {
   }
 
   List<String> generateWeekDays() {
-    List<String> weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    int todayIndex = DateTime.now().weekday; //
+    final weekDays = <String>['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final todayIndex = DateTime.now().weekday; //
     emit(GenerateWeekDays());
     return [
       ...weekDays.sublist(todayIndex),
@@ -43,32 +43,32 @@ class StatsCubit extends Cubit<StatsCubitState> {
     ];
   }
 
-  final Box goalBox = Hive.box('goalBox');
-  final Box sessionBox = Hive.box<Session>('sessionsBox');
+  final goalBox = Hive.box('goalBox');
+  final Box<Session> sessionBox = Hive.box<Session>('sessionsBox');
   final Box<AchievementModel> achievementsBox = Hive.box<AchievementModel>(
     'achievementsBox',
   );
-  void saveGoal(int goal) async {
-    goalBox.put('weeklyGoal', goal);
+  Future<void> saveGoal(int goal) async {
+    await goalBox.put('weeklyGoal', goal);
     emit(SaveGoal());
   }
 
   int getGoal() {
     emit(GetGoal());
-    return goalBox.get('weeklyGoal', defaultValue: 300); // الافتراضي 300 دقيقة
+    return goalBox.get('weeklyGoal', defaultValue: 300)!
+        as int; // الافتراضي 300 دقيقة
   }
 
   late int goal = 300;
   Future<void> sendNotification(String title, String body) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-          'productivity_channel',
-          'Productivity Notifications',
-          importance: Importance.high,
-          priority: Priority.high,
-        );
+    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'productivity_channel',
+      'Productivity Notifications',
+      importance: Importance.high,
+      priority: Priority.high,
+    );
 
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    const platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );
 
@@ -81,10 +81,7 @@ class StatsCubit extends Cubit<StatsCubitState> {
   }
 
   int totalFocusTime() {
-    return sessionBox.values.fold(
-      0,
-      (sum, session) => sum + (session as Session).duration,
-    );
+    return sessionBox.values.fold(0, (sum, session) => sum + session.duration);
   }
 
   int sessionCount() {
@@ -99,10 +96,11 @@ class StatsCubit extends Cubit<StatsCubitState> {
 
   void unlockAchievement(String title) {
     for (var i = 0; i < achievementsBox.length; i++) {
-      final achievement = achievementsBox.getAt(i) as AchievementModel;
+      final achievement = achievementsBox.getAt(i)!;
       if (achievement.title == title && !achievement.isUnlocked) {
-        achievement.isUnlocked = true;
-        achievement.save();
+        achievement
+          ..isUnlocked = true
+          ..save();
       }
     }
 
@@ -117,57 +115,57 @@ class StatsCubit extends Cubit<StatsCubitState> {
     hasSent100PercentNotification = false;
   }
 
-  void initializeAchievements() async {
+  Future<void> initializeAchievements() async {
     if (achievementsBox.isEmpty) {
-      List<AchievementModel> achievements = [
+      final achievements = <AchievementModel>[
         AchievementModel(
-          title: "Beginner 🎯",
-          description: "Complete the first focus session",
+          title: 'Beginner 🎯',
+          description: 'Complete the first focus session',
         ),
         AchievementModel(
-          title: "Diligent 🔥",
-          description: "Complete 5 focus sessions",
+          title: 'Diligent 🔥',
+          description: 'Complete 5 focus sessions',
         ),
         AchievementModel(
-          title: "Halfway 🏆",
-          description: "Achieve 50% of your weekly goal",
+          title: 'Halfway 🏆',
+          description: 'Achieve 50% of your weekly goal',
         ),
         AchievementModel(
-          title: "Champion 🚀",
-          description: "Achieve 100% of your weekly goal",
+          title: 'Champion 🚀',
+          description: 'Achieve 100% of your weekly goal',
         ),
       ];
 
-      for (var achievement in achievements) {
-        achievementsBox.add(achievement);
+      for (final achievement in achievements) {
+        await achievementsBox.add(achievement);
       }
     }
     if (progress() >= 0.5 && !hasSent50PercentNotification) {
-      sendNotification(
-        "🎯 Great Progress!",
+      await sendNotification(
+        '🎯 Great Progress!',
         "You've reached 50% of your weekly goal! 🚀",
       );
       hasSent50PercentNotification = true;
     }
     if (progress() >= 1.0 && !hasSent100PercentNotification) {
-      sendNotification(
-        "🏆 Goal Achieved!",
+      await sendNotification(
+        '🏆 Goal Achieved!',
         "You've reached 100% of your weekly goal! 🎉",
       );
       hasSent100PercentNotification = true;
     }
     if (sessionCount() >= 1) {
-      unlockAchievement("Beginner 🎯");
+      unlockAchievement('Beginner 🎯');
     }
     if (sessionCount() >= 5) {
-      unlockAchievement("Diligent 🔥");
+      unlockAchievement('Diligent 🔥');
     }
     if (progress() >= 0.5) {
-      unlockAchievement("Halfway 🏆");
+      unlockAchievement('Halfway 🏆');
     }
 
     if (progress() >= 1.0) {
-      unlockAchievement("Champion 🚀");
+      unlockAchievement('Champion 🚀');
     }
     emit(InitializeAchievements());
   }

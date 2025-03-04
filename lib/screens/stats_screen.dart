@@ -1,9 +1,9 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_tracker/cubit/stats_cubit/stats_cubit.dart';
 import 'package:focus_tracker/utils/components/text_field_border.dart';
 import 'package:focus_tracker/widgets/leading_icon.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -27,11 +27,11 @@ class _StatsScreenState extends State<StatsScreen> {
               style: TextStyle(fontWeight: FontWeight.w200),
             ),
 
-            leading: LeadingIcon(),
+            leading: const LeadingIcon(),
             actions: [
               IconButton(
                 icon: const Icon(Icons.delete),
-                onPressed: () => cubit.resetAllData(),
+                onPressed: cubit.resetAllData,
               ),
             ],
           ),
@@ -64,20 +64,16 @@ class _StatsScreenState extends State<StatsScreen> {
                         gridData: const FlGridData(show: false),
                         borderData: FlBorderData(
                           show: true,
-                          border: Border.all(color: Colors.grey, width: 1),
+                          border: Border.all(color: Colors.grey),
                         ),
                         titlesData: FlTitlesData(
-                          topTitles: const AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                          leftTitles: const AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
+                          topTitles: const AxisTitles(),
+                          leftTitles: const AxisTitles(),
                           bottomTitles: AxisTitles(
                             sideTitles: SideTitles(
                               showTitles: true,
                               getTitlesWidget: (value, meta) {
-                                List<String> days = cubit.generateWeekDays();
+                                final days = cubit.generateWeekDays();
                                 return Text(
                                   days[value.toInt()],
                                   style: const TextStyle(fontSize: 12),
@@ -108,7 +104,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   controller: _goalController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    hintText: "Set weekly productivity goal (minutes)",
+                    hintText: 'Set weekly productivity goal (minutes)',
                     border: border(),
                     focusedBorder: border(),
                     enabledBorder: border(),
@@ -118,10 +114,11 @@ class _StatsScreenState extends State<StatsScreen> {
                     ),
                   ),
                   onSubmitted: (value) {
-                    cubit.goal =
-                        int.tryParse(value) ??
-                        300; // إذا لم يدخل المستخدم قيمة صحيحة
-                    cubit.saveGoal(cubit.goal);
+                    cubit
+                      ..goal =
+                          int.tryParse(value) ??
+                          300 // إذا لم يدخل المستخدم قيمة صحيحة
+                      ..saveGoal(cubit.goal);
                   },
                 ),
                 const SizedBox(height: 20),
@@ -138,7 +135,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 Text('Weekly Goal Minutes: ${cubit.goal}'),
                 Text('Minutes Achieved: ${cubit.totalFocusTime()}'),
                 Text(
-                  "Weekly Goal Achieved: ${(cubit.progress() * 100).toStringAsFixed(0)}%",
+                  'Weekly Goal Achieved: ${(cubit.progress() * 100).toStringAsFixed(0)}%',
                 ),
               ],
             ),

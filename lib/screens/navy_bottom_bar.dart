@@ -10,7 +10,7 @@ class NavyBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: TimerScreen(),
+      body: const TimerScreen(),
       bottomNavigationBar: Row(
         children: [
           Expanded(
@@ -39,7 +39,7 @@ class NavyBottomBar extends StatelessWidget {
                         width: 0.9,
                       ),
                     ),
-                    child: Row(
+                    child: const Row(
                       spacing: 8,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [Icon(Icons.home_filled), Text('Home')],
@@ -47,33 +47,33 @@ class NavyBottomBar extends StatelessWidget {
                   ),
 
                   IconButton(
-                    icon: Icon(Icons.task_alt_rounded),
+                    icon: const Icon(Icons.task_alt_rounded),
                     onPressed:
                         () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => TasksScreen(),
+                            builder: (context) => const TasksScreen(),
                           ),
                         ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.analytics_outlined),
+                    icon: const Icon(Icons.analytics_outlined),
                     onPressed:
                         () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CustomDrawer(),
+                            builder: (context) => const CustomDrawer(),
                           ),
                         ),
                   ),
-                  SizedBox(width: 0),
+                  const SizedBox(width: 0),
                 ],
               ),
             ),
           ),
-          SizedBox(width: 50),
-          AddTaskButton(),
-          SizedBox(width: 16),
+          const SizedBox(width: 50),
+          const AddTaskButton(),
+          const SizedBox(width: 16),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

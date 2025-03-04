@@ -10,7 +10,7 @@ class AboutApp extends StatelessWidget {
       appBar: AppBar(
         title: const Text('About App'),
         automaticallyImplyLeading: false,
-        leading: LeadingIcon(),
+        leading: const LeadingIcon(),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -83,7 +83,7 @@ class AboutApp extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
             ),
             Text(
-              '✅ Reduces distractions: When you know you only have 25 minutes, it\'s easier to ignore notifications and distractions.\n✅ Improves work quality: Short, focused sessions help maintain a high level of mental performance.\n✅ Prevents burnout: Regular breaks keep your brain active and prevent mental fatigue.\n✅ Boosts motivation: Completing each session gives you a sense of accomplishment, making you more productive.',
+              "✅ Reduces distractions: When you know you only have 25 minutes, it's easier to ignore notifications and distractions.\n✅ Improves work quality: Short, focused sessions help maintain a high level of mental performance.\n✅ Prevents burnout: Regular breaks keep your brain active and prevent mental fatigue.\n✅ Boosts motivation: Completing each session gives you a sense of accomplishment, making you more productive.",
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 14),
             ),
             SizedBox(height: 8),
@@ -93,7 +93,7 @@ class AboutApp extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
             ),
             Text(
-              '📖 For students: Use focused work sessions to study effectively without boredom.\n💼 For professionals: Break down your daily tasks into short work sessions to boost productivity.\n🎨 For creatives: Whether you\'re a writer or designer, this method helps you achieve more without feeling overwhelmed.',
+              "📖 For students: Use focused work sessions to study effectively without boredom.\n💼 For professionals: Break down your daily tasks into short work sessions to boost productivity.\n🎨 For creatives: Whether you're a writer or designer, this method helps you achieve more without feeling overwhelmed.",
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 14),
             ),
             SizedBox(height: 8),

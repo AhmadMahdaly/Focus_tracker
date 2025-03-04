@@ -1,10 +1,10 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
-import 'package:focus_tracker/focus_tracker_app.dart';
-import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:focus_tracker/focus_tracker_app.dart';
 import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/models/session_model/session_model.dart';
 import 'package:focus_tracker/models/task_model/task_model.dart';
@@ -23,23 +23,17 @@ void main() async {
   await Hive.initFlutter();
 
   /// تسجيل Adapter لموديل Task
-  Hive.registerAdapter(TaskAdapter());
-  Hive.registerAdapter(SessionAdapter());
-  Hive.registerAdapter(AchievementModelAdapter());
+  Hive
+    ..registerAdapter(TaskAdapter())
+    ..registerAdapter(SessionAdapter())
+    ..registerAdapter(AchievementModelAdapter());
 
   /// فتح الـ Box لتخزين المهام
-  await Hive.openBox<Task>('tasksBox');
-  await Hive.openBox<Session>('sessionsBox');
-  await Hive.openBox('goalBox');
-  await Hive.openBox<AchievementModel>('achievementsBox');
-  await Hive.openBox('settingsBox');
+  await openBoxs();
 
   ///
-  const AndroidInitializationSettings androidSettings =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-  const InitializationSettings initSettings = InitializationSettings(
-    android: androidSettings,
-  );
+  const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const initSettings = InitializationSettings(android: androidSettings);
 
   await flutterLocalNotificationsPlugin.initialize(initSettings);
   await NotificationService.init();
@@ -48,9 +42,9 @@ void main() async {
   /// طلب إذن الإشعارات على Android 13+
   if (Platform.isAndroid) {
     if (await Permission.notification.request().isGranted) {
-      log("تم منح إذن الإشعارات ✅");
+      log('تم منح إذن الإشعارات ✅');
     } else {
-      log("🔴 لم يتم منح إذن الإشعارات");
+      log('🔴 لم يتم منح إذن الإشعارات');
     }
     if (!await FlutterForegroundTask.isIgnoringBatteryOptimizations) {
       await FlutterForegroundTask.requestIgnoreBatteryOptimization();
@@ -60,4 +54,23 @@ void main() async {
     }
   }
   runApp(const FocusTrackerApp());
+}
+
+Future<void> openBoxs() async {
+  if (!Hive.isBoxOpen('tasksBox')) {
+    await Hive.openBox<Task>('tasksBox');
+  }
+  if (!Hive.isBoxOpen('sessionsBox')) {
+    await Hive.openBox<Session>('sessionsBox');
+  }
+  if (!Hive.isBoxOpen('achievementsBox')) {
+    await Hive.openBox<AchievementModel>('achievementsBox');
+  }
+  if (!Hive.isBoxOpen('goalBox')) {
+    await Hive.openBox('goalBox');
+  }
+  if (!Hive.isBoxOpen('settingsbox')) {
+    await Hive.openBox('settingsbox');
+  }
+  return;
 }

@@ -6,7 +6,6 @@ import 'package:focus_tracker/cubit/task_manegment_cubit/task_manegment_cubit.da
 import 'package:focus_tracker/providers/theme_provider.dart';
 import 'package:focus_tracker/services/notification_service.dart';
 import 'package:focus_tracker/widgets/leading_icon.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -31,16 +30,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return Scaffold(
           appBar: AppBar(
             title: const Text(
-              "Settings",
+              'Settings',
               style: TextStyle(fontWeight: FontWeight.w200),
             ),
-            leading: LeadingIcon(),
+            leading: const LeadingIcon(),
           ),
           body: Column(
             children: [
               ListTile(
                 leading: const Icon(Icons.dark_mode),
-                title: const Text("Dark Mode"),
+                title: const Text('Dark Mode'),
                 trailing: Switch(
                   value: Provider.of<ThemeProvider>(context).isDarkMode,
                   onChanged: (value) {
@@ -53,22 +52,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.music_note),
-                title: const Text("Timer Sound"),
+                title: const Text('Timer Sound'),
                 subtitle: Text(cubit.selectedSound),
                 onTap: () {
                   cubit.showSoundSelectionDialog(context);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.notifications),
-                title: Text("Enable Daily Reminder"),
+                leading: const Icon(Icons.notifications),
+                title: const Text('Enable Daily Reminder'),
                 trailing: Switch(
-                  value: Hive.box(
-                    'settingsBox',
-                  ).get('dailyReminder', defaultValue: false),
+                  value:
+                      cubit.settingsBox.get(
+                            'dailyReminder',
+                            defaultValue: false,
+                          )
+                          as bool,
                   onChanged: (value) {
                     setState(() {
-                      Hive.box('settingsBox').put('dailyReminder', value);
+                      cubit.settingsBox.put('dailyReminder', value);
                       if (value) {
                         NotificationService.scheduleDailyReminder();
                       } else {
@@ -81,14 +83,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.delete),
-                title: const Text("Clear All Data"),
+                title: const Text('Clear All Data'),
 
                 onTap: () {
                   context
                     ..read<StatsCubit>().resetAllData()
                     ..read<TaskManegmentCubit>().deleteAllTasks();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("All data has been cleared")),
+                    const SnackBar(content: Text('All data has been cleared')),
                   );
                 },
               ),

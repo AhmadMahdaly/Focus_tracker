@@ -6,15 +6,15 @@ class AlarmPermissionService {
   static Future<void> requestExactAlarmPermission(BuildContext context) async {
     if (Platform.isAndroid) {
       if (await Permission.scheduleExactAlarm.isDenied) {
-        openAppSettings(); // فتح الإعدادات للسماح بالإذن يدويًا
+        await openAppSettings(); // فتح الإعدادات للسماح بالإذن يدويًا
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("⚠️ يرجى تمكين إذن التنبيهات الدقيقة من الإعدادات"),
+          const SnackBar(
+            content: Text('⚠️ يرجى تمكين إذن التنبيهات الدقيقة من الإعدادات'),
           ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("✅ إذن التنبيهات الدقيقة مفعل بالفعل!")),
+          const SnackBar(content: Text('✅ إذن التنبيهات الدقيقة مفعل بالفعل!')),
         );
       }
     }

@@ -32,9 +32,9 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
     emit(TimerPausedState());
   }
 
-  void stopTimer() async {
+  Future<void> stopTimer() async {
     isRunning = false;
-    saveSession(time / 60);
+    await saveSession(time / 60);
     resetTimer();
     await stopForegroundTask(); // إيقاف الخدمة
     emit(TimerStoppedState());
@@ -59,21 +59,21 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
     }
   }
 
-  void onSessionEnd() async {
-    DateTime endTime = DateTime.now(); // وقت انتهاء الجلسة
+  Future<void> onSessionEnd() async {
+    final endTime = DateTime.now(); // وقت انتهاء الجلسة
     await NotificationService.scheduleEndSessionNotification(
       2, // معرف مختلف عن إشعار البدء
-      "Break time is over! 🚀",
-      "5 minutes have passed since the session ended. Start another session! 🌟",
+      'Break time is over! 🚀',
+      '5 minutes have passed since the session ended. Start another session! 🌟',
       endTime,
     );
     emit(TimerSessionEndState());
   }
 
-  void saveSession(focusTime) async {
-    final Box sessionBox = Hive.box<Session>('sessionsBox');
+  Future<void> saveSession(double focusTime) async {
+    final sessionBox = Hive.box<Session>('sessionsBox');
     final session = Session(date: DateTime.now(), duration: focusTime.toInt());
-    sessionBox.add(session);
+    await sessionBox.add(session);
     emit(TimerSessionSavedState());
   }
 
@@ -84,23 +84,20 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
   }
 
   String formatTime() {
-    int minutes = focusSeconds ~/ 60;
-    int remainingSeconds = focusSeconds % 60;
+    final minutes = focusSeconds ~/ 60;
+    final remainingSeconds = focusSeconds % 60;
     return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
   Future<void> showNotification() async {
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-          'focus_channel',
-          'Focus Timer',
-          importance: Importance.high,
-          priority: Priority.high,
-        );
-
-    const NotificationDetails notificationDetails = NotificationDetails(
-      android: androidDetails,
+    const androidDetails = AndroidNotificationDetails(
+      'focus_channel',
+      'Focus Timer',
+      importance: Importance.high,
+      priority: Priority.high,
     );
+
+    const notificationDetails = NotificationDetails(android: androidDetails);
     await flutterLocalNotificationsPlugin.show(
       0,
       '🎉 Focus session ended!',
@@ -112,16 +109,14 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
 
   void playTimerSound() {
     final player = AudioPlayer();
-    String sound = Hive.box(
-      'settingsBox',
-    ).get('timerSound', defaultValue: "default");
+    final sound =
+        Hive.box('settingsBox').get('timerSound', defaultValue: 'default')
+            as String;
     switch (sound) {
-      case "bell":
+      case 'bell':
         player.play(AssetSource('sounds/bell.wav'));
-        break;
-      case "buzz":
+      case 'buzz':
         player.play(AssetSource('sounds/buzz.wav'));
-        break;
       default:
         player.play(AssetSource('sounds/default.wav'));
     }

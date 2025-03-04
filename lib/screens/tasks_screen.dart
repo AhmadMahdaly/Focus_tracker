@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_tracker/cubit/task_manegment_cubit/task_manegment_cubit.dart';
 import 'package:focus_tracker/cubit/timer_manegment_cubit/timer_manegment_cubit.dart';
+import 'package:focus_tracker/models/task_model/task_model.dart';
 import 'package:focus_tracker/widgets/leading_icon.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../models/task_model/task_model.dart';
 
 class TasksScreen extends StatelessWidget {
   const TasksScreen({super.key});
@@ -17,13 +17,13 @@ class TasksScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: const Text(
-              'Here\'s your tasks',
+              "Here's your tasks",
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 14),
             ),
 
             automaticallyImplyLeading: false,
 
-            leading: LeadingIcon(),
+            leading: const LeadingIcon(),
           ),
 
           body: Column(
@@ -31,14 +31,14 @@ class TasksScreen extends StatelessWidget {
               Expanded(
                 child: ValueListenableBuilder(
                   valueListenable: cubit.tasksBox.listenable(),
-                  builder: (context, Box box, _) {
+                  builder: (context, Box<Task> box, _) {
                     if (box.isEmpty) {
                       return const Center(child: Text('No tasks yet!'));
                     }
                     return ListView.builder(
                       itemCount: box.length,
                       itemBuilder: (context, index) {
-                        final task = box.getAt(index) as Task;
+                        final task = box.getAt(index)!;
                         return ListTile(
                           title: Text(
                             task.title,

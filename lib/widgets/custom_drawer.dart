@@ -11,12 +11,12 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: LeadingIcon()),
+      appBar: AppBar(leading: const LeadingIcon()),
       body: ListView(
         children: [
           ListTile(
-            leading: Icon(Icons.analytics_outlined),
-            title: Text("Productivity Stats"),
+            leading: const Icon(Icons.analytics_outlined),
+            title: const Text('Productivity Stats'),
             onTap: () {
               Navigator.push(
                 context,
@@ -26,32 +26,34 @@ class CustomDrawer extends StatelessWidget {
           ),
 
           ListTile(
-            leading: Icon(Icons.star_border_rounded),
-            title: Text("Achievements"),
+            leading: const Icon(Icons.star_border_rounded),
+            title: const Text('Achievements'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AchievementsScreen()),
+                MaterialPageRoute(
+                  builder: (context) => const AchievementsScreen(),
+                ),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("About App"),
+            leading: const Icon(Icons.settings),
+            title: const Text('About App'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AboutApp()),
+                MaterialPageRoute(builder: (context) => const AboutApp()),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("Settings"),
+            leading: const Icon(Icons.settings),
+            title: const Text('Settings'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsScreen()),
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
               );
             },
           ),

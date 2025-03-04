@@ -32,9 +32,9 @@ class TimerScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
+                      const Text(
                         'JUST FOCUS',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w300,
                         ),
@@ -45,29 +45,30 @@ class TimerScreen extends StatelessWidget {
                   progressColor: Colors.blue,
                 ),
                 const SizedBox(height: 30),
-                cubit.isRunning
-                    ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            cubit.stopTimer();
-                            context.read<StatsCubit>().initializeAchievements();
-                          },
-                          icon: Icon(Icons.stop_rounded, size: 50),
-                        ),
-                        IconButton(
-                          onPressed: cubit.pauseTimer,
-                          icon: Icon(Icons.pause_rounded, size: 45),
-                        ),
-                      ],
-                    )
-                    : Center(
-                      child: IconButton(
-                        onPressed: cubit.startTimer,
-                        icon: Icon(Icons.play_arrow_rounded, size: 50),
+                if (cubit.isRunning)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          cubit.stopTimer();
+                          context.read<StatsCubit>().initializeAchievements();
+                        },
+                        icon: const Icon(Icons.stop_rounded, size: 50),
                       ),
+                      IconButton(
+                        onPressed: cubit.pauseTimer,
+                        icon: const Icon(Icons.pause_rounded, size: 45),
+                      ),
+                    ],
+                  )
+                else
+                  Center(
+                    child: IconButton(
+                      onPressed: cubit.startTimer,
+                      icon: const Icon(Icons.play_arrow_rounded, size: 50),
                     ),
+                  ),
               ],
             ),
           ),

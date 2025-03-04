@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  bool _isDarkMode = false;
-  final Box settingsBox = Hive.box('settingsBox');
-
   ThemeProvider() {
-    _isDarkMode = settingsBox.get('darkMode', defaultValue: false);
+    _isDarkMode = settingsBox.get('darkMode', defaultValue: false) as bool;
   }
+  bool _isDarkMode = false;
+  final settingsBox = Hive.box('settingsBox');
 
   bool get isDarkMode => _isDarkMode;
 

@@ -3,7 +3,7 @@ import 'package:focus_tracker/cubit/task_manegment_cubit/task_manegment_cubit.da
 import 'package:focus_tracker/utils/components/text_field_border.dart';
 
 class TextFieldAddTask extends StatefulWidget {
-  const TextFieldAddTask({super.key, required this.cubit});
+  const TextFieldAddTask({required this.cubit, super.key});
 
   final TaskManegmentCubit cubit;
 

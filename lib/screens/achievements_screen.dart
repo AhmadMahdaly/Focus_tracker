@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_tracker/cubit/stats_cubit/stats_cubit.dart';
-import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/widgets/leading_icon.dart';
 
 class AchievementsScreen extends StatefulWidget {
@@ -26,17 +25,16 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
         return Scaffold(
           appBar: AppBar(
             title: const Text(
-              "🏅 Achievements",
+              '🏅 Achievements',
               style: TextStyle(fontWeight: FontWeight.w200),
             ),
 
-            leading: LeadingIcon(),
+            leading: const LeadingIcon(),
           ),
           body: ListView.builder(
             itemCount: cubit.achievementsBox.length,
             itemBuilder: (context, index) {
-              final achievement =
-                  cubit.achievementsBox.getAt(index) as AchievementModel;
+              final achievement = cubit.achievementsBox.getAt(index)!;
 
               return ListTile(
                 leading:

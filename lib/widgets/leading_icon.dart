@@ -9,7 +9,7 @@ class LeadingIcon extends StatelessWidget {
       onPressed: () {
         Navigator.pop(context); // إزالة جميع الصفحات
       },
-      icon: Icon(Icons.arrow_back_ios_new, size: 16),
+      icon: const Icon(Icons.arrow_back_ios_new, size: 16),
     );
   }
 }

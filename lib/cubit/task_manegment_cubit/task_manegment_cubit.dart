@@ -1,18 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:focus_tracker/models/task_model/task_model.dart';
 import 'package:focus_tracker/widgets/textfield_add_task.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:meta/meta.dart';
-
-import '../../models/task_model/task_model.dart';
 
 part 'task_manegment_state.dart';
 
 class TaskManegmentCubit extends Cubit<TaskManegmentState> {
   TaskManegmentCubit() : super(TaskInitial());
 
-  final Box tasksBox = Hive.box<Task>('tasksBox');
-  void addTaskDialog(context) {
+  final Box<Task> tasksBox = Hive.box<Task>('tasksBox');
+  void addTaskDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -26,7 +24,7 @@ class TaskManegmentCubit extends Cubit<TaskManegmentState> {
             children: [
               IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.close, size: 16),
+                icon: const Icon(Icons.close, size: 16),
               ),
             ],
           ),
@@ -37,7 +35,7 @@ class TaskManegmentCubit extends Cubit<TaskManegmentState> {
     );
   }
 
-  void addTask(taskController) {
+  void addTask(TextEditingController taskController) {
     if (taskController.text.isNotEmpty) {
       final task = Task(title: taskController.text);
       tasksBox.add(task);
@@ -47,7 +45,7 @@ class TaskManegmentCubit extends Cubit<TaskManegmentState> {
   }
 
   void toggleTaskCompletion(int index) {
-    final task = tasksBox.getAt(index) as Task;
+    final task = tasksBox.getAt(index)!;
     task.isCompleted = !task.isCompleted;
     tasksBox.putAt(index, task);
     emit(TaskUpdated());

@@ -6,7 +6,7 @@ import 'package:focus_tracker/cubit/task_manegment_cubit/task_manegment_cubit.da
 import 'package:focus_tracker/cubit/timer_manegment_cubit/timer_manegment_cubit.dart';
 
 class MainBlocProvider extends StatelessWidget {
-  const MainBlocProvider({super.key, required this.child});
+  const MainBlocProvider({required this.child, super.key});
   final Widget child;
   @override
   Widget build(BuildContext context) {

@@ -9,11 +9,10 @@ class NotificationService {
   static Future<void> init() async {
     tz.initializeTimeZones();
 
-    const AndroidInitializationSettings androidInitSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    const InitializationSettings initSettings = InitializationSettings(
-      android: androidInitSettings,
+    const androidInitSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
     );
+    const initSettings = InitializationSettings(android: androidInitSettings);
 
     await _notificationsPlugin.initialize(initSettings);
   }
@@ -22,17 +21,14 @@ class NotificationService {
     required String title,
     required String body,
   }) async {
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-          'focus_channel',
-          'Focus Reminders',
-          importance: Importance.high,
-          priority: Priority.high,
-        );
-
-    const NotificationDetails details = NotificationDetails(
-      android: androidDetails,
+    const androidDetails = AndroidNotificationDetails(
+      'focus_channel',
+      'Focus Reminders',
+      importance: Importance.high,
+      priority: Priority.high,
     );
+
+    const details = NotificationDetails(android: androidDetails);
     await _notificationsPlugin.show(1, title, body, details);
   }
 
@@ -40,7 +36,7 @@ class NotificationService {
     await _notificationsPlugin.zonedSchedule(
       2,
       '📌 Focus Reminder!',
-      'It\'s time for your focus session. 🚀 Get ready to achieve!',
+      "It's time for your focus session. 🚀 Get ready to achieve!",
       _nextInstanceOfFocusTime(),
       const NotificationDetails(
         android: AndroidNotificationDetails('focus_channel', 'Focus Reminders'),
@@ -54,8 +50,8 @@ class NotificationService {
   }
 
   static tz.TZDateTime _nextInstanceOfFocusTime() {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    final tz.TZDateTime scheduledTime = tz.TZDateTime(
+    final now = tz.TZDateTime.now(tz.local);
+    final scheduledTime = tz.TZDateTime(
       tz.local,
       now.year,
       now.month,
@@ -63,7 +59,7 @@ class NotificationService {
       9,
     ); // 9 صباحًا
     return scheduledTime.isBefore(now)
-        ? scheduledTime.add(Duration(days: 1))
+        ? scheduledTime.add(const Duration(days: 1))
         : scheduledTime;
   }
 
@@ -85,8 +81,6 @@ class NotificationService {
           'Focus Timer',
           importance: Importance.max,
           priority: Priority.high,
-          playSound: true,
-          enableVibration: true,
         ),
       ),
 
@@ -104,7 +98,9 @@ class NotificationService {
     String body,
     DateTime endTime,
   ) async {
-    DateTime notificationTime = endTime.add(Duration(minutes: 5)); // +5 دقائق
+    final notificationTime = endTime.add(
+      const Duration(minutes: 5),
+    ); // +5 دقائق
     await scheduleNotification(id, title, body, notificationTime);
   }
 
