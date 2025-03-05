@@ -59,7 +59,7 @@ class StatsCubit extends Cubit<StatsCubitState> {
         as int; // الافتراضي 300 دقيقة
   }
 
-  late int goal = 300;
+  late int goal = 0;
   Future<void> sendNotification(String title, String body) async {
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'productivity_channel',
