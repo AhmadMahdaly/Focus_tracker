@@ -1,11 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:focus_tracker/models/locale_model.dart';
 import 'package:focus_tracker/providers/main_bloc_provider.dart';
 import 'package:focus_tracker/providers/theme_provider.dart';
 import 'package:focus_tracker/screens/navy_bottom_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FocusTrackerApp extends StatelessWidget {
-  const FocusTrackerApp({super.key});
+  const FocusTrackerApp({required SharedPreferences prefs, super.key})
+    : _prefs = prefs;
+  final SharedPreferences _prefs;
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +19,30 @@ class FocusTrackerApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return MainBlocProvider(
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-              ),
-              darkTheme: ThemeData.dark(),
-              themeMode:
-                  themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-              title: 'Focus Tracker',
+            child: ChangeNotifierProvider(
+              create: (context) => LocaleModel(_prefs),
+              child: Consumer<LocaleModel>(
+                builder:
+                    (context, localeModel, child) => MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      localizationsDelegates: context.localizationDelegates,
+                      supportedLocales: context.supportedLocales,
+                      locale: context.locale,
+                      theme: ThemeData(
+                        colorScheme: ColorScheme.fromSeed(
+                          seedColor: Colors.blue,
+                        ),
+                      ),
+                      darkTheme: ThemeData.dark(),
+                      themeMode:
+                          themeProvider.isDarkMode
+                              ? ThemeMode.dark
+                              : ThemeMode.light,
+                      title: 'Focus Tracker',
 
-              home: const NavyBottomBar(),
+                      home: const NavyBottomBar(),
+                    ),
+              ),
             ),
           );
         },

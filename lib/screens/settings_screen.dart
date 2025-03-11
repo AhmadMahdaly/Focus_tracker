@@ -4,6 +4,7 @@ import 'package:focus_tracker/cubit/setting_cubit/setting_cubit.dart';
 import 'package:focus_tracker/cubit/stats_cubit/stats_cubit.dart';
 import 'package:focus_tracker/cubit/task_manegment_cubit/task_manegment_cubit.dart';
 import 'package:focus_tracker/providers/theme_provider.dart';
+import 'package:focus_tracker/screens/widgets/lang_dropdown_button.dart';
 import 'package:focus_tracker/services/notification_service.dart';
 import 'package:focus_tracker/widgets/leading_icon.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedLocale = Localizations.localeOf(context).toString();
     return BlocBuilder<SettingCubit, SettingState>(
       builder: (context, state) {
         final cubit = context.read<SettingCubit>();
@@ -81,6 +83,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                 ),
               ),
+
+              ListTile(
+                leading: const Icon(Icons.language),
+                title: const Text('Content language'),
+                trailing: LanguageDropDownButton(
+                  selectedLocale: selectedLocale,
+                ),
+              ),
+
               ListTile(
                 leading: const Icon(Icons.delete),
                 title: const Text('Clear All Data'),

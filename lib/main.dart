@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -12,12 +13,15 @@ import 'package:focus_tracker/services/foreground_service.dart';
 import 'package:focus_tracker/services/notification_service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
 
   /// تهيئة Hive
   await Hive.initFlutter();
@@ -53,7 +57,14 @@ void main() async {
       await FlutterForegroundTask.openAlarmsAndRemindersSettings();
     }
   }
-  runApp(const FocusTrackerApp());
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: FocusTrackerApp(prefs: prefs),
+    ),
+  );
 }
 
 Future<void> openBoxs() async {

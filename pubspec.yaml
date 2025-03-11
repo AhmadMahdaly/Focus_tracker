@@ -25,6 +25,7 @@ dependencies:
   android_alarm_manager_plus: ^4.0.7
   flutter_foreground_task: ^8.17.0
   flutter_bloc: ^9.1.0
+  easy_localization: ^3.0.7+1
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +42,7 @@ flutter:
   assets:
     - assets/images/
     - assets/sounds/
+    - assets/translations/
 
   # fonts:
   #   - family: Schyler
