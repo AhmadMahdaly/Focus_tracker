@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:focus_tracker/content/content_page.dart';
 import 'package:focus_tracker/screens/about_app.dart';
-import 'package:focus_tracker/screens/about_mind.dart';
 import 'package:focus_tracker/screens/achievements_screen.dart';
 import 'package:focus_tracker/screens/settings_screen.dart';
 import 'package:focus_tracker/screens/stats_screen.dart';
@@ -17,11 +17,13 @@ class HomePopupMenu extends StatelessWidget {
             PopupMenuItem(
               child: ListTile(
                 leading: const Icon(Icons.person_outline),
-                title: const Text('You'),
+                title: const Text('Improve Yourself'),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AboutMind()),
+                    MaterialPageRoute(
+                      builder: (context) => const ContentPage(),
+                    ),
                   );
                 },
               ),

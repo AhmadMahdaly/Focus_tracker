@@ -55,7 +55,7 @@ class StatsCubit extends Cubit<StatsCubitState> {
 
   int getGoal() {
     emit(GetGoal());
-    return goalBox.get('weeklyGoal', defaultValue: 300)!
+    return goalBox.get('weeklyGoal', defaultValue: 0)!
         as int; // الافتراضي 300 دقيقة
   }
 

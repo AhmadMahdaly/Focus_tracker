@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -45,11 +44,7 @@ void main() async {
 
   /// طلب إذن الإشعارات على Android 13+
   if (Platform.isAndroid) {
-    if (await Permission.notification.request().isGranted) {
-      log('تم منح إذن الإشعارات ✅');
-    } else {
-      log('🔴 لم يتم منح إذن الإشعارات');
-    }
+    await Permission.notification.request();
     if (!await FlutterForegroundTask.isIgnoringBatteryOptimizations) {
       await FlutterForegroundTask.requestIgnoreBatteryOptimization();
     }

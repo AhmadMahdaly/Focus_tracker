@@ -48,9 +48,9 @@ class _StatsScreenState extends State<StatsScreen> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText:
-                        cubit.goal == 0
+                        cubit.getGoal() == 0
                             ? 'Set weekly productivity goal (minutes)'
-                            : 'Your weekly goal focus minutes: ${cubit.goal}',
+                            : 'Your weekly goal focus minutes: ${cubit.getGoal()}',
                     hintStyle: const TextStyle(
                       fontSize: 14,
                       // decoration: TextDecoration.underline,
