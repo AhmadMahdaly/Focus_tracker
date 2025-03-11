@@ -13,6 +13,17 @@ class StatsScreen extends StatefulWidget {
 
 class _StatsScreenState extends State<StatsScreen> {
   final TextEditingController _goalController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    context.read<StatsCubit>().getGoal();
+  }
+
+  @override
+  void dispose() {
+    _goalController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,11 +189,5 @@ class _StatsScreenState extends State<StatsScreen> {
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _goalController.dispose();
-    super.dispose();
   }
 }

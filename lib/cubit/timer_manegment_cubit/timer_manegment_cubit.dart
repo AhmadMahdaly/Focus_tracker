@@ -50,8 +50,8 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
       resetTimer();
       saveSession(time / 60);
       playTimerSound();
-      showNotification();
-      onSessionEnd();
+      onSessionEndNotification();
+      onBreakEndNotification();
       StatsCubit().initializeAchievements();
       emit(TimerCompletedState());
     } else {
@@ -59,10 +59,10 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
     }
   }
 
-  Future<void> onSessionEnd() async {
+  Future<void> onBreakEndNotification() async {
     final endTime = DateTime.now(); // وقت انتهاء الجلسة
     await NotificationService.scheduleEndSessionNotification(
-      2, // معرف مختلف عن إشعار البدء
+      5, // معرف مختلف عن إشعار البدء
       'Break time is over! 🚀',
       '5 minutes have passed since the session ended. Start another session! 🌟',
       endTime,
@@ -89,7 +89,7 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
     return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
-  Future<void> showNotification() async {
+  Future<void> onSessionEndNotification() async {
     const androidDetails = AndroidNotificationDetails(
       'focus_channel',
       'Focus Timer',

@@ -64,21 +64,23 @@ class TasksScreen extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  context.read<TimerManegmentCubit>().isRunning
-                                      ? context
-                                          .read<TimerManegmentCubit>()
-                                          .pauseTimer()
-                                      : context
-                                          .read<TimerManegmentCubit>()
-                                          .startTimer();
+                                  // context.read<TimerManegmentCubit>().isRunning
+                                  //     ? context
+                                  //         .read<TimerManegmentCubit>()
+                                  //         .pauseTimer()
+                                  //     :
+                                  context
+                                      .read<TimerManegmentCubit>()
+                                      .startTimer();
                                   Navigator.pop(context);
                                 },
                                 icon:
-                                    context
-                                            .read<TimerManegmentCubit>()
-                                            .isRunning
-                                        ? const Icon(Icons.pause)
-                                        : const Icon(Icons.play_arrow_rounded),
+                                // context
+                                //         .read<TimerManegmentCubit>()
+                                //         .isRunning
+                                //     ? const Icon(Icons.pause)
+                                //     :
+                                const Icon(Icons.play_arrow_rounded),
                               ),
                               IconButton(
                                 icon: const Icon(
