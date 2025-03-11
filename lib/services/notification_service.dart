@@ -79,7 +79,7 @@ class NotificationService {
         android: AndroidNotificationDetails(
           'focus_timer_channel',
           'Focus Timer',
-          importance: Importance.max,
+          importance: Importance.high,
           priority: Priority.high,
         ),
       ),
