@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/screens/focus_timer_screen.dart';
+import 'package:focus_tracker/screens/stats_screen.dart';
 import 'package:focus_tracker/screens/tasks_screen.dart';
 import 'package:focus_tracker/screens/widgets/add_task_button.dart';
-import 'package:focus_tracker/widgets/custom_drawer.dart';
 
 class NavyBottomBar extends StatelessWidget {
   const NavyBottomBar({super.key});
@@ -62,7 +62,7 @@ class NavyBottomBar extends StatelessWidget {
                         () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const CustomDrawer(),
+                            builder: (context) => const StatsScreen(),
                           ),
                         ),
                   ),

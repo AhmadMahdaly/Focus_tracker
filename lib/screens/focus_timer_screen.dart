@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_tracker/cubit/stats_cubit/stats_cubit.dart';
 import 'package:focus_tracker/cubit/timer_manegment_cubit/timer_manegment_cubit.dart';
+import 'package:focus_tracker/screens/about_app.dart';
+import 'package:focus_tracker/screens/achievements_screen.dart';
+import 'package:focus_tracker/screens/settings_screen.dart';
+import 'package:focus_tracker/screens/stats_screen.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class TimerScreen extends StatelessWidget {
@@ -13,6 +17,71 @@ class TimerScreen extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<TimerManegmentCubit>();
         return Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            leading: PopupMenuButton(
+              icon: const Icon(Icons.menu_rounded),
+              itemBuilder:
+                  (context) => [
+                    PopupMenuItem(
+                      child: ListTile(
+                        leading: const Icon(Icons.analytics_outlined),
+                        title: const Text('Productivity Stats'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const StatsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    PopupMenuItem(
+                      child: ListTile(
+                        leading: const Icon(Icons.star_border_rounded),
+                        title: const Text('Achievements'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AchievementsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    PopupMenuItem(
+                      child: ListTile(
+                        leading: const Icon(Icons.info_outline),
+                        title: const Text('About App'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AboutApp(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    PopupMenuItem(
+                      child: ListTile(
+                        leading: const Icon(Icons.settings_outlined),
+                        title: const Text('Settings'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SettingsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+            ),
+          ),
           body: Center(
             child: ListView(
               children: [
