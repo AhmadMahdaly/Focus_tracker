@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_tracker/main.dart';
@@ -34,7 +35,15 @@ class StatsCubit extends Cubit<StatsCubitState> {
   }
 
   List<String> generateWeekDays() {
-    final weekDays = <String>['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final weekDays = <String>[
+      'Mon'.tr(),
+      'Tue'.tr(),
+      'Wed'.tr(),
+      'Thu'.tr(),
+      'Fri'.tr(),
+      'Sat'.tr(),
+      'Sun'.tr(),
+    ];
     final todayIndex = DateTime.now().weekday; //
     emit(GenerateWeekDays());
     return [
@@ -55,11 +64,10 @@ class StatsCubit extends Cubit<StatsCubitState> {
 
   int getGoal() {
     emit(GetGoal());
-    return goalBox.get('weeklyGoal', defaultValue: 0)!
+    return goalBox.get('weeklyGoal', defaultValue: 300)!
         as int; // الافتراضي 300 دقيقة
   }
 
-  late int goal = 0;
   Future<void> sendNotification(String title, String body) async {
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'productivity_channel',
@@ -119,20 +127,20 @@ class StatsCubit extends Cubit<StatsCubitState> {
     if (achievementsBox.isEmpty) {
       final achievements = <AchievementModel>[
         AchievementModel(
-          title: 'Beginner 🎯',
-          description: 'Complete the first focus session',
+          title: 'Beginner 🎯'.tr(),
+          description: 'Complete the first focus session'.tr(),
         ),
         AchievementModel(
-          title: 'Diligent 🔥',
-          description: 'Complete 5 focus sessions',
+          title: 'Diligent 🔥'.tr(),
+          description: 'Complete 5 focus sessions'.tr(),
         ),
         AchievementModel(
-          title: 'Halfway 🏆',
-          description: 'Achieve 50% of your weekly goal',
+          title: 'Halfway 🏆'.tr(),
+          description: 'Achieve 50% of your weekly goal'.tr(),
         ),
         AchievementModel(
-          title: 'Champion 🚀',
-          description: 'Achieve 100% of your weekly goal',
+          title: 'Champion 🚀'.tr(),
+          description: 'Achieve 100% of your weekly goal'.tr(),
         ),
       ];
 
@@ -142,30 +150,30 @@ class StatsCubit extends Cubit<StatsCubitState> {
     }
     if (progress() >= 0.5 && !hasSent50PercentNotification) {
       await sendNotification(
-        '🎯 Great Progress!',
-        "You've reached 50% of your weekly goal! 🚀",
+        '🎯 Great Progress!'.tr(),
+        "You've reached 50% of your weekly goal! 🚀".tr(),
       );
       hasSent50PercentNotification = true;
     }
     if (progress() >= 1.0 && !hasSent100PercentNotification) {
       await sendNotification(
-        '🏆 Goal Achieved!',
-        "You've reached 100% of your weekly goal! 🎉",
+        '🏆 Goal Achieved!'.tr(),
+        "You've reached 100% of your weekly goal! 🎉".tr(),
       );
       hasSent100PercentNotification = true;
     }
     if (sessionCount() >= 1) {
-      unlockAchievement('Beginner 🎯');
+      unlockAchievement('Beginner 🎯'.tr());
     }
     if (sessionCount() >= 5) {
-      unlockAchievement('Diligent 🔥');
+      unlockAchievement('Diligent 🔥'.tr());
     }
     if (progress() >= 0.5) {
-      unlockAchievement('Halfway 🏆');
+      unlockAchievement('Halfway 🏆'.tr());
     }
 
     if (progress() >= 1.0) {
-      unlockAchievement('Champion 🚀');
+      unlockAchievement('Champion 🚀'.tr());
     }
     emit(InitializeAchievements());
   }

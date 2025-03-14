@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/screens/focus_timer_screen.dart';
 import 'package:focus_tracker/screens/stats_screen.dart';
@@ -30,14 +31,12 @@ class NavyBottomBar extends StatelessWidget {
               child: Container(
                 clipBehavior: Clip.antiAlias,
                 margin: const EdgeInsets.all(16),
-
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40),
                   border: Border.all(
                     color: Colors.blue.withAlpha(100),
                     width: 0.9,
                   ),
-                  // color: Colors.white,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,13 +51,15 @@ class NavyBottomBar extends StatelessWidget {
                           width: 0.9,
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         spacing: 8,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Icon(Icons.home_filled), Text('Home')],
+                        children: [
+                          const Icon(Icons.home_filled),
+                          Text('Home'.tr()),
+                        ],
                       ),
                     ),
-
                     IconButton(
                       icon: const Icon(Icons.task_alt_rounded),
                       onPressed:

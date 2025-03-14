@@ -7,15 +7,8 @@ class AlarmPermissionService {
     if (Platform.isAndroid) {
       if (await Permission.scheduleExactAlarm.isDenied) {
         await openAppSettings(); // فتح الإعدادات للسماح بالإذن يدويًا
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('⚠️ يرجى تمكين إذن التنبيهات الدقيقة من الإعدادات'),
-          ),
-        );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('✅ إذن التنبيهات الدقيقة مفعل بالفعل!')),
-        );
+        ///
       }
     }
   }

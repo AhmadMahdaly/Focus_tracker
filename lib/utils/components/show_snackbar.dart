@@ -4,12 +4,9 @@ void showSnackBar(BuildContext context, String text, {int duration = 4}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       duration: Duration(seconds: duration),
-      // backgroundColor: kDisableButtonColor,
       content: Text(
         text,
-        style: const TextStyle(
-          // color: kMainColor,
-        ),
+        style: const TextStyle(),
         textAlign: TextAlign.center,
       ),
     ),

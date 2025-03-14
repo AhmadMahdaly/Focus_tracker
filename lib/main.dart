@@ -9,7 +9,6 @@ import 'package:focus_tracker/models/achievement_model/achievement_model.dart';
 import 'package:focus_tracker/models/session_model/session_model.dart';
 import 'package:focus_tracker/models/task_model/task_model.dart';
 import 'package:focus_tracker/services/foreground_service.dart';
-import 'package:focus_tracker/services/notification_service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +38,6 @@ void main() async {
   const initSettings = InitializationSettings(android: androidSettings);
 
   await flutterLocalNotificationsPlugin.initialize(initSettings);
-  await NotificationService.init();
   await initForegroundTask(); // تهيئة الخدمة عند تشغيل التطبيق
 
   /// طلب إذن الإشعارات على Android 13+

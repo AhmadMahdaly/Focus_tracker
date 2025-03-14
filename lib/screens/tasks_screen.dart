@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_tracker/cubit/task_manegment_cubit/task_manegment_cubit.dart';
@@ -16,9 +17,9 @@ class TasksScreen extends StatelessWidget {
         final cubit = context.read<TaskManegmentCubit>();
         return Scaffold(
           appBar: AppBar(
-            title: const Text(
-              "Here's your tasks",
-              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+            title: Text(
+              "Here's your tasks".tr(),
+              style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
             ),
 
             automaticallyImplyLeading: false,
@@ -33,7 +34,7 @@ class TasksScreen extends StatelessWidget {
                   valueListenable: cubit.tasksBox.listenable(),
                   builder: (context, Box<Task> box, _) {
                     if (box.isEmpty) {
-                      return const Center(child: Text('No tasks yet!'));
+                      return Center(child: Text('No tasks yet!'.tr()));
                     }
                     return ListView.builder(
                       itemCount: box.length,
@@ -103,7 +104,7 @@ class TasksScreen extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             onPressed: () => cubit.addTaskDialog(context),
             elevation: 0.5,
-            tooltip: 'Add Task',
+            tooltip: 'Add a task'.tr(),
 
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(320),

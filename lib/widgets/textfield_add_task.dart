@@ -1,19 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/cubit/task_manegment_cubit/task_manegment_cubit.dart';
 import 'package:focus_tracker/utils/components/text_field_border.dart';
 
 class TextFieldAddTask extends StatefulWidget {
   const TextFieldAddTask({required this.cubit, super.key});
-
   final TaskManegmentCubit cubit;
-
   @override
   State<TextFieldAddTask> createState() => _TextFieldAddTaskState();
 }
 
 class _TextFieldAddTaskState extends State<TextFieldAddTask> {
   final TextEditingController _taskController = TextEditingController();
-
   @override
   void dispose() {
     _taskController.dispose();
@@ -25,7 +23,7 @@ class _TextFieldAddTaskState extends State<TextFieldAddTask> {
     return TextField(
       controller: _taskController,
       decoration: InputDecoration(
-        hintText: 'Add a task',
+        hintText: 'Add a task'.tr(),
         border: border(),
         focusedBorder: border(),
         enabledBorder: border(),

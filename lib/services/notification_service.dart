@@ -1,42 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:focus_tracker/main.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
-  static final FlutterLocalNotificationsPlugin _notificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
-  static Future<void> init() async {
-    tz.initializeTimeZones();
-
-    const androidInitSettings = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
-    );
-    const initSettings = InitializationSettings(android: androidInitSettings);
-
-    await _notificationsPlugin.initialize(initSettings);
-  }
-
-  static Future<void> showNotification({
-    required String title,
-    required String body,
-  }) async {
-    const androidDetails = AndroidNotificationDetails(
-      'focus_channel',
-      'Focus Reminders',
-      importance: Importance.high,
-      priority: Priority.high,
-    );
-
-    const details = NotificationDetails(android: androidDetails);
-    await _notificationsPlugin.show(1, title, body, details);
-  }
-
   static Future<void> scheduleDailyReminder() async {
-    await _notificationsPlugin.zonedSchedule(
+    await flutterLocalNotificationsPlugin.zonedSchedule(
       2,
-      '📌 Focus Reminder!',
-      "It's time for your focus session. 🚀 Get ready to achieve!",
+      'Focus Reminder!'.tr(),
+      "It's time for your focus session. 🚀 Get ready to achieve!".tr(),
       _nextInstanceOfFocusTime(),
       const NotificationDetails(
         android: AndroidNotificationDetails('focus_channel', 'Focus Reminders'),
@@ -63,49 +35,8 @@ class NotificationService {
         : scheduledTime;
   }
 
-  // جدولة إشعار معين بوقت محدد
-  static Future<void> scheduleNotification(
-    int id,
-    String title,
-    String body,
-    DateTime scheduledTime,
-  ) async {
-    await _notificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      tz.TZDateTime.from(scheduledTime, tz.local),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'focus_timer_channel',
-          'Focus Timer',
-          importance: Importance.high,
-          priority: Priority.high,
-        ),
-      ),
-
-      matchDateTimeComponents: DateTimeComponents.time,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      androidScheduleMode: AndroidScheduleMode.alarmClock,
-    );
-  }
-
-  // جدولة إشعار انتهاء الجلسة بعد 5 دقائق
-  static Future<void> scheduleEndSessionNotification(
-    int id,
-    String title,
-    String body,
-    DateTime endTime,
-  ) async {
-    final notificationTime = endTime.add(
-      const Duration(minutes: 5),
-    ); // +5 دقائق
-    await scheduleNotification(id, title, body, notificationTime);
-  }
-
   // إلغاء جميع الإشعارات
   static Future<void> cancelAllNotifications() async {
-    await _notificationsPlugin.cancelAll();
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 }

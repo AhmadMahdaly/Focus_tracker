@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focus_tracker/cubit/stats_cubit/stats_cubit.dart';
 import 'package:focus_tracker/main.dart';
 import 'package:focus_tracker/models/session_model/session_model.dart';
 import 'package:focus_tracker/services/foreground_service.dart';
-import 'package:focus_tracker/services/notification_service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:meta/meta.dart';
 
@@ -20,6 +20,7 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
   int focusSeconds = 1500; // 25 دقيقة (25 × 60 ثانية)
   bool isRunning = false;
   int time = 0;
+
   void startTimer() {
     isRunning = true;
     Future.delayed(const Duration(seconds: 1), tick);
@@ -34,7 +35,7 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
 
   Future<void> stopTimer() async {
     isRunning = false;
-    // await saveSession(time / 60);
+    await saveSession(time / 60);
     resetTimer();
     await stopForegroundTask(); // إيقاف الخدمة
     emit(TimerStoppedState());
@@ -51,23 +52,12 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
       saveSession(time / 60);
       playTimerSound();
       onSessionEndNotification();
-      onBreakEndNotification();
+      Future.delayed(const Duration(minutes: 5), scheduleNotification);
       StatsCubit().initializeAchievements();
       emit(TimerCompletedState());
     } else {
       pauseTimer();
     }
-  }
-
-  Future<void> onBreakEndNotification() async {
-    final endTime = DateTime.now(); // وقت انتهاء الجلسة
-    await NotificationService.scheduleEndSessionNotification(
-      5, // معرف مختلف عن إشعار البدء
-      'Break time is over! 🚀',
-      '5 minutes have passed since the session ended. Start another session! 🌟',
-      endTime,
-    );
-    emit(TimerSessionEndState());
   }
 
   Future<void> saveSession(double focusTime) async {
@@ -100,11 +90,32 @@ class TimerManegmentCubit extends Cubit<TimerManegmentState> {
     const notificationDetails = NotificationDetails(android: androidDetails);
     await flutterLocalNotificationsPlugin.show(
       0,
-      '🎉 Focus session ended!',
-      'Take a short break and then start a new session. ☕',
+      '🎉 Focus session ended!'.tr(),
+      'Take a short break and then start a new session. ☕'.tr(),
       notificationDetails,
     );
+    playTimerSound();
     emit(TimerNotificationState());
+  }
+
+  Future<void> scheduleNotification() async {
+    const androidDetails = AndroidNotificationDetails(
+      'focus_channel',
+      'Focus Timer',
+      importance: Importance.high,
+      priority: Priority.high,
+    );
+
+    const notificationDetails = NotificationDetails(android: androidDetails);
+    await flutterLocalNotificationsPlugin.show(
+      5, // معرف مختلف عن إشعار البدء
+      'Break time is over! 🚀'.tr(),
+      '5 minutes have passed since the session ended. Start another session! 🌟'
+          .tr(),
+      notificationDetails,
+    );
+
+    emit(TimerSessionEndState());
   }
 
   void playTimerSound() {

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_tracker/cubit/stats_cubit/stats_cubit.dart';
@@ -37,9 +38,9 @@ class TimerScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Text(
-                        'JUST FOCUS',
-                        style: TextStyle(
+                      Text(
+                        'JUST FOCUS'.tr(),
+                        style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w300,
                         ),

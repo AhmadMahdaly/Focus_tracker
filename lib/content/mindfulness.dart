@@ -12,15 +12,12 @@ class Mindfulness extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Mindfulness title'.tr(),
-          style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+          style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 12),
         ),
         centerTitle: true,
         leading: const LeadingIcon(),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: SingleChildScrollView(child: TextBody(text: 'Mindfulness'.tr())),
-      ),
+      body: SingleChildScrollView(child: TextBody(text: 'Mindfulness'.tr())),
     );
   }
 }

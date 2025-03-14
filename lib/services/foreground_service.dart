@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
 /// تهيئة إعدادات الخدمة
@@ -25,8 +26,8 @@ Future<void> initForegroundTask() async {
 /// تشغيل الخدمة
 Future<void> startForegroundTask() async {
   await FlutterForegroundTask.startService(
-    notificationTitle: 'Timer Running ⏳',
-    notificationText: 'Just keep focusing!',
+    notificationTitle: 'Timer Running ⏳'.tr(),
+    notificationText: 'Just keep focusing!'.tr(),
   );
 }
 

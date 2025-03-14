@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/models/locale_model.dart';
+import 'package:focus_tracker/screens/navy_bottom_bar.dart';
 import 'package:provider/provider.dart';
 
 class LanguageDropDownButton extends StatelessWidget {
@@ -34,6 +35,10 @@ class LanguageDropDownButton extends StatelessWidget {
               if (value != null) {
                 await context.setLocale(Locale(value));
               }
+              await Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const NavyBottomBar()),
+              );
             },
           ),
     );

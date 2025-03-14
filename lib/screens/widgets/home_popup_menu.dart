@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:focus_tracker/content/content_page.dart';
 import 'package:focus_tracker/screens/about_app.dart';
@@ -17,8 +18,9 @@ class HomePopupMenu extends StatelessWidget {
             PopupMenuItem(
               child: ListTile(
                 leading: const Icon(Icons.person_outline),
-                title: const Text('Improve Yourself'),
+                title: Text('Improve Yourself'.tr()),
                 onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -31,8 +33,9 @@ class HomePopupMenu extends StatelessWidget {
             PopupMenuItem(
               child: ListTile(
                 leading: const Icon(Icons.analytics_outlined),
-                title: const Text('Productivity Stats'),
+                title: Text('Productivity Stats'.tr()),
                 onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -45,8 +48,9 @@ class HomePopupMenu extends StatelessWidget {
             PopupMenuItem(
               child: ListTile(
                 leading: const Icon(Icons.star_border_rounded),
-                title: const Text('Achievements'),
+                title: Text('Achievements'.tr()),
                 onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -60,8 +64,9 @@ class HomePopupMenu extends StatelessWidget {
             PopupMenuItem(
               child: ListTile(
                 leading: const Icon(Icons.info_outline),
-                title: const Text('About App'),
+                title: Text('About App'.tr()),
                 onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const AboutApp()),
@@ -72,8 +77,9 @@ class HomePopupMenu extends StatelessWidget {
             PopupMenuItem(
               child: ListTile(
                 leading: const Icon(Icons.settings_outlined),
-                title: const Text('Settings'),
+                title: Text('Settings'.tr()),
                 onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 part 'setting_state.dart';
@@ -42,12 +43,12 @@ class SettingCubit extends Cubit<SettingState> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Select Timer Sound'),
+          title: Text('Select Timer Sound'.tr()),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text('Default'),
+                title: Text('Default'.tr()),
                 onTap: () {
                   changeSound('default');
                   playTimerSound();
@@ -55,7 +56,7 @@ class SettingCubit extends Cubit<SettingState> {
                 },
               ),
               ListTile(
-                title: const Text('Bell'),
+                title: Text('Bell'.tr()),
                 onTap: () {
                   changeSound('bell');
                   playTimerSound();
@@ -63,7 +64,7 @@ class SettingCubit extends Cubit<SettingState> {
                 },
               ),
               ListTile(
-                title: const Text('Buzz'),
+                title: Text('Buzz'.tr()),
                 onTap: () {
                   changeSound('buzz');
                   playTimerSound();

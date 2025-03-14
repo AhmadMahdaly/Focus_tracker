@@ -6,10 +6,10 @@ class TextBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Text(
         text,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
       ),
     );
   }

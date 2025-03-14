@@ -16,19 +16,18 @@ class TaskManegmentCubit extends Cubit<TaskManegmentState> {
       builder: (context) {
         return AlertDialog(
           titlePadding: EdgeInsets.zero,
+          buttonPadding: EdgeInsets.zero,
           contentPadding: const EdgeInsets.all(8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          icon: Row(
-            children: [
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.close, size: 16),
-              ),
-            ],
-          ),
-          iconPadding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          // icon: Row(
+          //   children: [
+          //     IconButton(
+          //       onPressed: () => Navigator.pop(context),
+          //       icon: const Icon(Icons.close, size: 16),
+          //     ),
+          //   ],
+          // ),
+          // iconPadding: EdgeInsets.zero,
           content: TextFieldAddTask(cubit: this),
         );
       },

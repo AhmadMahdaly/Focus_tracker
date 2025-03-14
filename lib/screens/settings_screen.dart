@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_tracker/cubit/setting_cubit/setting_cubit.dart';
@@ -6,6 +7,7 @@ import 'package:focus_tracker/cubit/task_manegment_cubit/task_manegment_cubit.da
 import 'package:focus_tracker/providers/theme_provider.dart';
 import 'package:focus_tracker/screens/widgets/lang_dropdown_button.dart';
 import 'package:focus_tracker/services/notification_service.dart';
+import 'package:focus_tracker/utils/components/show_snackbar.dart';
 import 'package:focus_tracker/widgets/leading_icon.dart';
 import 'package:provider/provider.dart';
 
@@ -31,9 +33,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         final cubit = context.read<SettingCubit>();
         return Scaffold(
           appBar: AppBar(
-            title: const Text(
-              'Settings',
-              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+            title: Text(
+              'Settings'.tr(),
+              style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
             ),
             leading: const LeadingIcon(),
           ),
@@ -41,7 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               ListTile(
                 leading: const Icon(Icons.dark_mode),
-                title: const Text('Dark Mode'),
+                title: Text('Dark Mode'.tr()),
                 trailing: Switch(
                   value: Provider.of<ThemeProvider>(context).isDarkMode,
                   onChanged: (value) {
@@ -54,7 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.music_note),
-                title: const Text('Timer Sound'),
+                title: Text('Timer End Sound'.tr()),
                 subtitle: Text(cubit.selectedSound),
                 onTap: () {
                   cubit.showSoundSelectionDialog(context);
@@ -62,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.notifications),
-                title: const Text('Enable Daily Reminder'),
+                title: Text('Enable Daily Reminder'.tr()),
                 trailing: Switch(
                   value:
                       cubit.settingsBox.get(
@@ -86,7 +88,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               ListTile(
                 leading: const Icon(Icons.language),
-                title: const Text('Content language'),
+                title: Text('Change language'.tr()),
                 trailing: LanguageDropDownButton(
                   selectedLocale: selectedLocale,
                 ),
@@ -94,15 +96,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               ListTile(
                 leading: const Icon(Icons.delete),
-                title: const Text('Clear All Data'),
+                title: Text('Clear All Data'.tr()),
 
                 onTap: () {
                   context
                     ..read<StatsCubit>().resetAllData()
                     ..read<TaskManegmentCubit>().deleteAllTasks();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('All data has been cleared')),
-                  );
+                  showSnackBar(context, 'All data has been cleared'.tr());
                 },
               ),
             ],

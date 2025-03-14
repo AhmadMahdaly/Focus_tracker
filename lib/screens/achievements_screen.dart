@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_tracker/cubit/stats_cubit/stats_cubit.dart';
@@ -24,9 +25,9 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
         final cubit = context.read<StatsCubit>();
         return Scaffold(
           appBar: AppBar(
-            title: const Text(
-              '🏅 Achievements',
-              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+            title: Text(
+              'Achievements'.tr(),
+              style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
             ),
 
             leading: const LeadingIcon(),
