@@ -4,7 +4,6 @@ import 'package:focus_tracker/models/locale_model.dart';
 import 'package:focus_tracker/providers/main_bloc_provider.dart';
 import 'package:focus_tracker/providers/theme_provider.dart';
 import 'package:focus_tracker/screens/navy_bottom_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,41 +22,34 @@ class FocusTrackerApp extends StatelessWidget {
             child: ChangeNotifierProvider(
               create: (context) => LocaleModel(_prefs),
               child: Consumer<LocaleModel>(
-                builder: (context, localeModel, child) {
-                  return MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: context.locale,
-                    darkTheme: ThemeData.dark(),
-
-                    themeMode:
-                        themeProvider.isDarkMode
-                            ? ThemeMode.dark
-                            : ThemeMode.light,
-                    title: 'Focus Tracker',
-                    home: const NavyBottomBar(),
-                    builder: (context, navigator) {
-                      final lang = Localizations.localeOf(context).languageCode;
-
-                      return Theme(
-                        data: ThemeData(
-                          colorScheme: ColorScheme.fromSeed(
-                            seedColor: Colors.blue,
-                          ),
-                          textTheme: Theme.of(context).textTheme.apply(
-                            fontFamily:
-                                lang == 'ar'
-                                    ? GoogleFonts.tajawal().fontFamily
-                                    : GoogleFonts.inter().fontFamily,
-                          ),
+                builder:
+                    (context, localeModel, child) => MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      localizationsDelegates: context.localizationDelegates,
+                      supportedLocales: context.supportedLocales,
+                      locale: context.locale,
+                      theme: ThemeData(
+                        fontFamily: 'Avenir',
+                        colorScheme: ColorScheme.fromSeed(
+                          seedColor: Colors.blue,
                         ),
+                      ),
 
-                        child: navigator!,
-                      );
-                    },
-                  );
-                },
+                      darkTheme: ThemeData(
+                        fontFamily: 'Avenir',
+                        colorScheme: ColorScheme.fromSeed(
+                          seedColor: Colors.black,
+
+                          brightness: Brightness.dark,
+                        ),
+                      ),
+                      themeMode:
+                          themeProvider.isDarkMode
+                              ? ThemeMode.dark
+                              : ThemeMode.light,
+                      title: 'Focus Tracker',
+                      home: const NavyBottomBar(),
+                    ),
               ),
             ),
           );
