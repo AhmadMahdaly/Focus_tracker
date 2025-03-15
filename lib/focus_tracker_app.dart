@@ -34,12 +34,10 @@ class FocusTrackerApp extends StatelessWidget {
                           seedColor: Colors.blue,
                         ),
                       ),
-
                       darkTheme: ThemeData(
                         fontFamily: 'Avenir',
                         colorScheme: ColorScheme.fromSeed(
                           seedColor: Colors.black,
-
                           brightness: Brightness.dark,
                         ),
                       ),

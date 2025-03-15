@@ -35,9 +35,10 @@ class LanguageDropDownButton extends StatelessWidget {
               if (value != null) {
                 await context.setLocale(Locale(value));
               }
-              await Navigator.pushReplacement(
+              await Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const NavyBottomBar()),
+                (route) => false,
               );
             },
           ),

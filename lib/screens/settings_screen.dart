@@ -78,14 +78,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       if (value) {
                         NotificationService.scheduleDailyReminder();
                       } else {
-                        cubit.settingsBox.clear();
-                        // NotificationService.cancelDailyReminder();
+                        NotificationService.cancelAllNotifications();
                       }
                     });
                   },
                 ),
               ),
-
               ListTile(
                 leading: const Icon(Icons.language),
                 title: Text('Change language'.tr()),

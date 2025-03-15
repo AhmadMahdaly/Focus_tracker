@@ -148,23 +148,15 @@ class _StatsScreenState extends State<StatsScreen> {
                     width: 320,
                     child: LineChart(
                       LineChartData(
-                        borderData: FlBorderData(
-                          show: true,
-                          border: Border.all(color: Colors.grey),
-                        ),
+                        borderData: FlBorderData(show: true),
                         titlesData: FlTitlesData(
-                          rightTitles: const AxisTitles(),
                           topTitles: const AxisTitles(),
-                          leftTitles: AxisTitles(
+                          rightTitles: const AxisTitles(),
+                          leftTitles: const AxisTitles(
                             sideTitles: SideTitles(
                               showTitles: true,
-                              getTitlesWidget: (value, meta) {
-                                final days = cubit.totalFocusTime().toString();
-                                return Text(
-                                  days[value.toInt()],
-                                  style: const TextStyle(fontSize: 12),
-                                );
-                              },
+                              minIncluded: false,
+                              reservedSize: 40,
                             ),
                           ),
                           bottomTitles: AxisTitles(
